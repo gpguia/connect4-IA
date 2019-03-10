@@ -1,8 +1,10 @@
 #include <iostream>
 #include "board.h"
 
-int main(void){
-    Board* b = new Board(1,2);
+using namespace std;
 
+int main(void){
+    Board* b = new Board();
+    b->printBoard();
     return 0;
 }

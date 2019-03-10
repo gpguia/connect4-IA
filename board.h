@@ -3,14 +3,15 @@
 #include <vector>
 #include <iostream>
 
+using namespace std;
 
 class Board{
     private:
-        int pr;
+        vector < vector <int> > board;
     public:
-        Board(int x, int y);
-        int pu;
-        int getNumA();
+        Board();
+        void printBoard();
+        int play(int column);
 };
 
 #endif
