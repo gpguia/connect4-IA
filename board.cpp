@@ -10,6 +10,14 @@ Board::Board(){
     }
 }
 
+void Board::printVec(vector<int> v){
+    vector<int>::iterator it;
+    for(it=v.begin();it!=v.end();it++){
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
 void Board::printBoard(){
     for(int i=0;i<6;i++){
         for(int j=0;j<7;j++){
@@ -23,4 +31,9 @@ int Board::play(int column){
     if(board[0][column] != -1 || column < 0 || column > 6){
         return -1;
     }
+    return 0;
+}
+
+MATRIX Board::getBoard(){
+    return this->board;
 }

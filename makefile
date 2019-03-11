@@ -1,0 +1,16 @@
+OBJS=connect4.o board.o
+CC=g++
+PROGRAM=./connect4
+CFLAGS=-I.
+INDIR=./inputs/
+
+
+all: $(PROGRAM)
+
+$(PROGRAM): $(OBJS)
+	$(CC) -o $(PROGRAM) $(OBJS)
+clean:
+	rm -f $(PROGRAM) $(OBJS)
+
+test: $(PROGRAM)
+	$(PROGRAM) < $(INDIR)example1.txt
