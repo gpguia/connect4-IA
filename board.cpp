@@ -1,37 +1,27 @@
-#include "board.h"
+#include "connect4.h"
 
 Board::Board(){
     for(int i=0;i<6;i++){
-        vector<int> tmp;
+        vector<char> tmp;
         for(int j=0;j<7;j++){
-            tmp.push_back(-1);
+            tmp.push_back('-');
         }
         board.push_back(tmp);
     }
 }
 
-void Board::printVec(vector<int> v){
-    vector<int>::iterator it;
-    for(it=v.begin();it!=v.end();it++){
-        cout << *it << " ";
-    }
-    cout << endl;
-}
+
 
 void Board::printBoard(){
+    printf("\n\n\n\n");
     for(int i=0;i<6;i++){
+        printf("\t\t");
         for(int j=0;j<7;j++){
-            cout << board[i][j] << " ";
+            printf("%c ",this->board[i][j]); 
         }
-        cout << endl;
+        printf("\n");
     }
-}
-
-int Board::play(int column){
-    if(board[0][column] != -1 || column < 0 || column > 6){
-        return -1;
-    }
-    return 0;
+    printf("\n\n\n\n");
 }
 
 MATRIX Board::getBoard(){

@@ -5,18 +5,15 @@
 
 using namespace std;
 
-#define MATRIX vector < vector <int> >
+#define MATRIX vector < vector <char> >
 
 class Board{
     private:
          MATRIX board;
     public:
         Board();
-        void printBoard();
-        int play(int column);
-        void printVec(vector<int> v);
         MATRIX getBoard();
-        
+        void printBoard();
 };
 
 #endif
