@@ -10,10 +10,17 @@ using namespace std;
 class Board{
     private:
          MATRIX board;
+         char turn;
     public:
         Board();
         MATRIX getBoard();
+        int getTurn();
         void printBoard();
+        int checkWin(int x, int y);
+        void setPos(int x, int y, int turn);
+        void setTurn(char c);
+        bool play(int col);
+        int getRow(int col);
 };
 
 #endif

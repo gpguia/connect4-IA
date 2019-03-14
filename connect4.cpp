@@ -4,12 +4,20 @@ using namespace std;
 
 
 int main(void){
-    int algorithm, depth;
+    int algorithm, depth, column;
     Board *b = new Board();
 
-    readInput(&algorithm,&depth);
-    start(b);
+    //readInput(&algorithm,&depth);
+    //printf("****** The Game has started ******\n");
+    //getPlayerCol(b,&column);
 
+    b->setPos(5,6,'O');
+    b->setPos(4,5,'O');
+    b->setPos(3,4,'O');
+    b->setPos(2,3,'O');
+    b->setTurn('O');
+    b->printBoard();
+    cout << b->checkWin(0,0) << endl;
     return 0;
 }
 
@@ -36,8 +44,9 @@ void readInput(int *algorithm, int *depth){
     }
 }
 
-void start(Board *b){
-    printf("****** The Game has started ******\n");
+void getPlayerCol(Board *b, int *col){
     b->printBoard();
-    
+    printf("\t\t1 2 3 4 5 6 7 \n");
+    printf("Type column number: ");
+    scanf("%d",col);
 }

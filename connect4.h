@@ -4,4 +4,4 @@
 #include "board.h"
 
 void readInput(int *algorithm, int *depth);
-void start(Board *b);
+void getPlayerCol(Board *b,int *col);
