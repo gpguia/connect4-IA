@@ -173,12 +173,14 @@ int Board::checkWin(int x, int y){
 }
 
 int Board::getRow(int col){ //get a possible value of i to play
-    int i;
-    for(i=0; i<5;i++){
-        if(this->board[i][col] == '-')
-            i++;
+    int r=0;
+    for(int i=0;i<6;i++){
+        if(this->board[i][col] == '-'){
+            r++;
+        }
     }
-    return i;
+    r--;
+    return r;
 }
 
 bool Board::play(int col){
