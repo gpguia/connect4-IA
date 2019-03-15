@@ -17,15 +17,21 @@ int main(void){
     b->setPos(3,4,'O');
     b->setPos(2,3,'O');
     */
-    b->setTurn('O');
+    b->setTurn('O'); //player 1 starts
     b->printBoard();
     //cout << b->checkWin(0,0) << endl;
 
     getPlayerCol(b,&column);
     row = b->getRow(column);
-    cout << "row: " << row << endl;
     while(b->checkWin(row,column) == -1){
         b->setPos(row,column,b->getTurn());
+        if(b->getTurn() == 'O'){
+            b->setTurn('X');
+            //IA PLAY
+        }else{
+            b->setTurn('O');
+            //mudar funcoes de play para aqui. Quando ia ja jogar.
+        }
         getPlayerCol(b,&column);
         row = b->getRow(column);
     }
@@ -61,5 +67,4 @@ void getPlayerCol(Board *b, int *col){
     printf("Type column number: ");
     scanf("%d",col);
     *col = *col - 1;
-    cout << "col: " << *col << endl;
 }
