@@ -47,13 +47,14 @@ void Board::setTurn(char c){
 int Board::checkWin(int x, int y){
     int count=0;
     //check horizontal left
-    for(int i=1;i<4;i++){
-        if(x >= 0 && x <= 5 && y-i >= 0 && y-i <=6){
-            if(this->board[x][y-i] == this->turn){
-                count++;
-            }
+   for(int j=1;j<4;j++){
+		if(x >= 0 && x <= 5 && y-j >= 0 && y-j <=6){
+		//if(posj-j>=0){
+			if(this->board[x][y - j] == this->turn){
+				count++;
+			}
         }
-    }
+	}
     if(count == 3){//since board[x][y] is the same that was played we dont have to check it.
         if(this->turn == 'O')
             return 1; //player won
@@ -63,14 +64,16 @@ int Board::checkWin(int x, int y){
         
     count=0;
     //check horizontal right
-    for(int i=1;i<4;i++){
-        if(x >= 0 && x <= 5 && y+i >= 0 && y+i <=6){
-            if(this->board[x][y+i] == this->turn){
-                count++;
-            }
+    for(int j=1;j<4;j++){
+		//if(posj+j<=6){
+		if(x >= 0 && x <= 5 && y+j >= 0 && y+j <=6){
+			if(this->board[x][y + j] == this->turn){
+				count++;
+			}
         }
     }
     if(count == 3){//since board[x][y] is the same that was played we dont have to check it.
+        cout << "hr right" << endl;
         if(this->turn == 'O')
             return 1; //player won
         else
@@ -80,10 +83,11 @@ int Board::checkWin(int x, int y){
     //checkVertUp
     count=0;
     for(int i=1;i<4;i++){
-        if(x-i >=0 && x-i <=5 && y >=0 && y <=6){
-            if(this->board[x-i][y] == this->turn){
-                count++;
-            }
+		if(x-i >= 0 && x-i <= 5 && y >= 0 && y <=6){
+		//if(posi-i>=0){
+			if(this->board[x-i][y] == this->turn){
+				count++;
+			}
         }
     }
 
@@ -97,10 +101,11 @@ int Board::checkWin(int x, int y){
     //checkVertDown
     count=0;
     for(int i=1;i<4;i++){
-        if(x+i >=0 && x+i <=5 && y >=0 && y <=6){
-            if(this->board[x+i][y] == this->turn){
-                count++;
-            }
+		if(x+i >= 0 && x+i <= 5 && y >= 0 && y <=6){
+		//if(posi+i <= 5){
+			if(this->board[x+i][y] == this->turn){
+				count++;
+			}
         }
     }
     if(count == 3){//since board[x][y] is the same that was played we dont have to check it.
@@ -111,11 +116,11 @@ int Board::checkWin(int x, int y){
     }
 
     //diagLeft
+    count=0;
     for(int i=1;i<4;i++){
-        if(x+i <= 5 && y-i >=0){
-            if(this->board[x+i][y-i] == this->turn){
+        if(x+i < 6 && y-i >= 0){
+            if(this->board[x+i][y-i]==this->turn)
                 count++;
-            }
         }
     }
     if(count == 3){//since board[x][y] is the same that was played we dont have to check it.
@@ -125,11 +130,11 @@ int Board::checkWin(int x, int y){
             return 0; //IA WON
     }
     //DiagRight
+    count=0;
     for(int i=1;i<4;i++){
-        if(x-i >= 0 && y+i <= 6){
-            if(this->board[x-i][y+i] == this->turn){
+        if(x-i >= 0 && y+i < 7){
+            if(this->board[x-i][y+i]==this->turn)
                 count++;
-            }
         }
     }
     if(count == 3){//since board[x][y] is the same that was played we dont have to check it.
@@ -140,11 +145,11 @@ int Board::checkWin(int x, int y){
     }
 
     //reverseDiagLeft
+    count=0;
     for(int i=1;i<4;i++){
-        if(x+i <= 5 && y+i <= 6){
-            if(this->board[x+i][y+i] == this->turn){
+        if(x+i < 6 && y+i < 7){
+            if(this->board[x+i][y+i]==this->turn)
                 count++;
-            }
         }
     }
     if(count == 3){//since board[x][y] is the same that was played we dont have to check it.
@@ -155,11 +160,11 @@ int Board::checkWin(int x, int y){
     }
 
     //reverseDiagRight
+    count=0;
     for(int i=1;i<4;i++){
         if(x-i >= 0 && y-i >= 0){
-            if(this->board[x-i][y-i] == this->turn){
+            if(this->board[x-i][y-i] == this->turn)
                 count++;
-            }
         }
     }
     if(count == 3){//since board[x][y] is the same that was played we dont have to check it.

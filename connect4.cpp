@@ -18,7 +18,7 @@ int main(void){
     b->setPos(2,3,'O');
     */
     b->setTurn('O'); //player 1 starts
-    b->printBoard();
+    //b->printBoard();
     //cout << b->checkWin(0,0) << endl;
 
     getPlayerCol(b,&column);
@@ -34,7 +34,12 @@ int main(void){
         }
         getPlayerCol(b,&column);
         row = b->getRow(column);
+        cout << "row: " << row << endl;
+        cout << "col: " << column << endl;
     }
+    //add the last pice
+    b->setPos(row,column,b->getTurn());
+    b->printBoard();
     return 0;
 }
 
