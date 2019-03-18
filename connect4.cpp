@@ -2,7 +2,6 @@
 
 using namespace std;
 
-
 int main(void){
     int algorithm, depth, row, column;
     Board *b = new Board();
@@ -18,24 +17,20 @@ int main(void){
     b->setPos(2,3,'O');
     */
     b->setTurn('O'); //player 1 starts
-    //b->printBoard();
-    //cout << b->checkWin(0,0) << endl;
 
     getPlayerCol(b,&column);
     row = b->getRow(column);
     while(b->checkWin(row,column) == -1){
         b->setPos(row,column,b->getTurn());
-        if(b->getTurn() == 'O'){
-            b->setTurn('X');
-            //IA PLAY
-        }else{
+        b->setLastMove(row,column);
+        if(b->getTurn() == 'X'){
             b->setTurn('O');
-            //mudar funcoes de play para aqui. Quando ia ja jogar.
+            b->minimax(b->getBoard());
+        }else{
+            b->setTurn('X');
+            getPlayerCol(b,&column);
+            row = b->getRow(column);
         }
-        getPlayerCol(b,&column);
-        row = b->getRow(column);
-        cout << "row: " << row << endl;
-        cout << "col: " << column << endl;
     }
     //add the last pice
     b->setPos(row,column,b->getTurn());
