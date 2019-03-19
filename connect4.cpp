@@ -22,15 +22,14 @@ int main(void){
     row = b->getRow(column);
     while(b->checkWin(row,column) == -1){
         b->setPos(row,column,b->getTurn());
-        b->setLastMove(row,column);
         if(b->getTurn() == 'X'){
             b->setTurn('O');
-            b->minimax(b->getBoard());
         }else{
             b->setTurn('X');
-            getPlayerCol(b,&column);
-            row = b->getRow(column);
+            //AI play here
         }
+        getPlayerCol(b,&column);
+        row = b->getRow(column);
     }
     //add the last pice
     b->setPos(row,column,b->getTurn());
