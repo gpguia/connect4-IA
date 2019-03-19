@@ -12,6 +12,7 @@ class Board{
     private:
          MATRIX board;
          char turn;
+         
     public:
         Board();
         virtual ~Board();
