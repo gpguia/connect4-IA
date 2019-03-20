@@ -26,6 +26,8 @@ int main(void){
             b->setTurn('O');
         }else{
             b->setTurn('X');
+            Minimax *mm = new Minimax(b);
+            mm->children(b,b->getTurn());
             //AI play here
         }
         getPlayerCol(b,&column);

@@ -2,20 +2,18 @@
 #define MINIMAX_H
 
 #include "board.h"
-#include "connect4.h"
 #include <queue>
 
 class Minimax{
-    
     private:
-
+        Board *b;
     public:
-        Minimax(); 
+        void printt(int num);
+        Minimax(Board *b); 
         virtual ~Minimax();
-        int getNumRow(int col, MATRIX b);
-        queue <MATRIX> children(MATRIX pBoard, char turn);
-        int max_value(Board *b, int depth, int limit);
-        int min_value(Board *b, int depth, int limit);
+        queue <MATRIX> children(Board *pb, char turn);
+        int max_value(int depth, int limit);
+        int min_value(int depth, int limit);
         
 };
 

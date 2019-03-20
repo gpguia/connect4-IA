@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 
+
 #include "board.h"
 #include "minimax.h"
 
