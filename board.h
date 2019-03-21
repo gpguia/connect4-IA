@@ -22,9 +22,10 @@ class Board{
         int checkWin(int x, int y);
         void setPos(int x, int y, int turn);
         void setTurn(char c);
-        bool play(int col);
+        int play(int col);
         int getRow(int col);
         void rmPos(int i, int j);
+        int fullCheck();
 };
 
 #endif

@@ -3,7 +3,7 @@
 using namespace std;
 
 int main(void){
-    int algorithm, depth, row, column;
+    int algorithm, depth, row, column, checkPlay;
     Board *b = new Board();
 
     //readInput(&algorithm,&depth);
@@ -17,21 +17,35 @@ int main(void){
     b->setPos(2,3,'O');
     */
     b->setTurn('O'); //player 1 starts
-
-    getPlayerCol(b,&column);
-    row = b->getRow(column);
-    while(b->checkWin(row,column) == -1){
-        b->setPos(row,column,b->getTurn());
-        if(b->getTurn() == 'X'){
-            b->setTurn('O');
-        }else{
+    while(true){
+        if(b->getTurn() == 'O'){
+            getPlayerCol(b,&column);
+            //row = b->getRow(column);
+            //b->setPos(row,column,b->getTurn());
+            checkPlay = b->play(column);
+            while(checkPlay == -1){
+                cout << "ERROR: invalid column." << endl;
+                getPlayerCol(b,&column);
+                checkPlay = b->play(column);
+            }
+            if(b->checkWin(row,column) == 1){
+                cout << "Player 1 Wins :D" << endl;
+                break;
+            }
             b->setTurn('X');
+        }else{
+            //AI
             Minimax *mm = new Minimax(b);
-            mm->children(b,b->getTurn());
-            //AI play here
+            column = mm->minimax();
+            row = b->getRow(column);
+            b->setPos(row,column,b->getTurn());
+            if(b->checkWin(row,column) == 1){
+                cout << "AI Wins :D" << endl;
+                break;
+            }
+            b->setTurn('O');
         }
-        getPlayerCol(b,&column);
-        row = b->getRow(column);
+        b->printBoard();
     }
     //add the last pice
     b->setPos(row,column,b->getTurn());

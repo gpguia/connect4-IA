@@ -9,9 +9,6 @@ Minimax::~Minimax(){
     free(this->b);
 }
 
-void Minimax::printt(int num){
-    cout << num << endl;
-}
 
 //pb = Parent Board
 queue <MATRIX> Minimax::children(Board *pb, char turn){
@@ -29,6 +26,9 @@ queue <MATRIX> Minimax::children(Board *pb, char turn){
     return q;
 }
 
+int Minimax::minimax(){
+    return rand() % 7;
+}
 
 
 int Minimax::max_value(int depth, int limit){

@@ -3,6 +3,8 @@
 
 #include "board.h"
 #include <queue>
+#include <ctime>
+#include <cstdlib>
 
 class Minimax{
     private:
@@ -14,7 +16,7 @@ class Minimax{
         queue <MATRIX> children(Board *pb, char turn);
         int max_value(int depth, int limit);
         int min_value(int depth, int limit);
-        
+        int minimax();
 };
 
 #endif

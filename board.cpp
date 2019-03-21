@@ -46,6 +46,8 @@ void Board::setTurn(char c){
     this->turn = c;
 }
 
+
+
 //return 1 if player win, return 2 if IA win
 //x and y are the positions where the last pice was played
 int Board::checkWin(int x, int y){
@@ -191,14 +193,14 @@ int Board::getRow(int col){ //get a possible value of i to play
     return r;
 }
 
-bool Board::play(int col){
+int Board::play(int col){
     
     if(this->board[0][col] != '-' || col < 0 || col > 6){
-        return false;
+        return -1;
     }
     int row = this->getRow(col);
     this->setPos(row,col,this->turn);
-    return true;
+    return row;
 }
 
 void Board::rmPos(int i, int j){
