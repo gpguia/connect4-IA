@@ -3,7 +3,7 @@
 using namespace std;
 
 int main(void){
-    int algorithm, depth, row, column, checkPlay;
+    int algorithm, depth, row, column, checkPlay, win;
     Board *b = new Board();
 
     //readInput(&algorithm,&depth);
@@ -28,8 +28,7 @@ int main(void){
                 getPlayerCol(b,&column);
                 checkPlay = b->play(column);
             }
-            if(b->checkWin(row,column) == 1){
-                cout << "Player 1 Wins :D" << endl;
+            if(checkPlay != 2 && checkPlay != -1){
                 break;
             }
             b->setTurn('X');
@@ -39,16 +38,14 @@ int main(void){
             column = mm->minimax();
             row = b->getRow(column);
             b->setPos(row,column,b->getTurn());
-            if(b->checkWin(row,column) == 1){
+            if(b->checkWin(row,column) == 0){
                 cout << "AI Wins :D" << endl;
                 break;
             }
             b->setTurn('O');
         }
-        b->printBoard();
     }
     //add the last pice
-    b->setPos(row,column,b->getTurn());
     b->printBoard();
     return 0;
 }

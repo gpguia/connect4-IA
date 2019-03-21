@@ -46,11 +46,10 @@ void Board::setTurn(char c){
     this->turn = c;
 }
 
-
-
 //return 1 if player win, return 2 if IA win
 //x and y are the positions where the last pice was played
 int Board::checkWin(int x, int y){
+    cout << "check win - x: " << x << " y: " << y << " turn: " << this->turn << endl;
     int count=0;
     //check horizontal left
    for(int j=1;j<4;j++){
@@ -194,13 +193,22 @@ int Board::getRow(int col){ //get a possible value of i to play
 }
 
 int Board::play(int col){
-    
+    int win;
     if(this->board[0][col] != '-' || col < 0 || col > 6){
         return -1;
     }
     int row = this->getRow(col);
     this->setPos(row,col,this->turn);
-    return row;
+    win = checkWin(row,col);
+    if(win == 1){
+        cout << "Player 1 Won :D\n"; 
+        return 1;
+    }
+    if(win == 0){
+        cout << "AI Won :D\n"; 
+        return 0;
+    }
+    return 2;
 }
 
 void Board::rmPos(int i, int j){
