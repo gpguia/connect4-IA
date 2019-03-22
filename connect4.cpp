@@ -16,12 +16,10 @@ int main(void){
     b->setPos(3,4,'O');
     b->setPos(2,3,'O');
     */
-    b->setTurn('O'); //player 1 starts
+    b->setTurn('X'); //player 1 starts
     while(true){
-        if(b->getTurn() == 'O'){
+        if(b->getTurn() == 'X'){
             getPlayerCol(b,&column);
-            //row = b->getRow(column);
-            //b->setPos(row,column,b->getTurn());
             checkPlay = b->play(column);
             while(checkPlay == -1){
                 cout << "ERROR: invalid column." << endl;
@@ -31,18 +29,18 @@ int main(void){
             if(checkPlay != 2 && checkPlay != -1){
                 break;
             }
-            b->setTurn('X');
+            b->setTurn('O');
         }else{
             //AI
             Minimax *mm = new Minimax(b);
-            column = mm->minimax();
-            row = b->getRow(column);
-            b->setPos(row,column,b->getTurn());
-            if(b->checkWin(row,column) == 0){
-                cout << "AI Wins :D" << endl;
+            column = mm->minimax(5);
+            //row = b->getRow(column);
+            //b->setPos(row,column,b->getTurn());
+            checkPlay = b->play(column);
+            if(checkPlay != 2 && checkPlay != -1){
                 break;
             }
-            b->setTurn('O');
+            b->setTurn('X');
         }
     }
     //add the last pice

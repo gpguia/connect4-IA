@@ -26,7 +26,6 @@ class Board{
         int getRow(int col);
         void rmPos(int i, int j);
         int fullCheck();
-        int myCheckWin(int rowpos, int colpos);
 };
 
 #endif

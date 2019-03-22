@@ -49,8 +49,8 @@ void Board::setTurn(char c){
 //return 1 if player win, return 2 if IA win
 //x and y are the positions where the last pice was played
 int Board::checkWin(int x, int y){
-    cout << "check win - x: " << x << " y: " << y << " turn: " << this->turn << endl;
     int count=0;
+    
     //check horizontal left
    for(int j=1;j<4;j++){
 		if(x >= 0 && x <= 5 && y-j >= 0 && y-j <=6){
@@ -201,11 +201,11 @@ int Board::play(int col){
     this->setPos(row,col,this->turn);
     win = checkWin(row,col);
     if(win == 1){
-        cout << "Player 1 Won :D\n"; 
+        cout << "AI Won :D\n"; 
         return 1;
     }
     if(win == 0){
-        cout << "AI Won :D\n"; 
+        cout << "Player 1 Won :D\n"; 
         return 0;
     }
     return 2;

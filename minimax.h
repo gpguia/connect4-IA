@@ -13,10 +13,10 @@ class Minimax{
         void printt(int num);
         Minimax(Board *b); 
         virtual ~Minimax();
-        queue <MATRIX> children(Board *pb, char turn);
+        queue <Board> children(char turn);
         int max_value(int depth, int limit);
         int min_value(int depth, int limit);
-        int minimax();
+        int minimax(int depth);
 };
 
 #endif
