@@ -8,15 +8,15 @@
 
 class Minimax{
     private:
-        Board *b;
     public:
         void printt(int num);
-        Minimax(Board *b); 
+        Minimax();
         virtual ~Minimax();
-        queue <Board> children(char turn);
-        int max_value(int depth, int limit);
-        int min_value(int depth, int limit);
-        int minimax(int depth);
+        queue <Board> children(Board *b, char turn);
+        int max_value(Board b, int depth, int limit);
+        int min_value(Board b, int depth, int limit);
+        int minimax(Board *b, int depth);
+        int checkPoints(Board b, int row, int col, char turn);
 };
 
 #endif

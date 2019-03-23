@@ -2,49 +2,56 @@
 
 using namespace std;
 
+enum{
+  minimax = 1,
+  alfabeta = 2,
+  mcts = 3
+};
+
 int main(void){
     int algorithm, depth, row, column, checkPlay, win;
     Board *b = new Board();
 
-    //readInput(&algorithm,&depth);
-    //printf("****** The Game has started ******\n");
-    //getPlayerCol(b,&column);
-
-    /*
-    b->setPos(5,6,'O');
-    b->setPos(4,5,'O');
-    b->setPos(3,4,'O');
-    b->setPos(2,3,'O');
-    */
-    b->setTurn('X'); //player 1 starts
-    while(true){
-        if(b->getTurn() == 'X'){
-            getPlayerCol(b,&column);
-            checkPlay = b->play(column);
-            while(checkPlay == -1){
-                cout << "ERROR: invalid column." << endl;
+    readInput(&algorithm,&depth);
+    switch(algorithm){
+      case minimax :
+        b->setTurn('X'); //player 1 starts
+        while(true){
+            if(b->getTurn() == 'X'){
                 getPlayerCol(b,&column);
                 checkPlay = b->play(column);
+                while(checkPlay == -1){
+                    cout << "ERROR: invalid column." << endl;
+                    getPlayerCol(b,&column);
+                    checkPlay = b->play(column);
+                }
+                if(checkPlay != 2 && checkPlay != -1){
+                    break;
+                }
+                b->setTurn('O');
+            }else{
+                //AI
+                Minimax *mm = new Minimax();
+                column = mm->minimax(b,5);
+                checkPlay = b->play(column);
+                if(checkPlay != 2 && checkPlay != -1){
+                    break;
+                }
+                free(mm);
+                b->setTurn('X');
             }
-            if(checkPlay != 2 && checkPlay != -1){
-                break;
-            }
-            b->setTurn('O');
-        }else{
-            //AI
-            Minimax *mm = new Minimax(b);
-            column = mm->minimax(5);
-            //row = b->getRow(column);
-            //b->setPos(row,column,b->getTurn());
-            checkPlay = b->play(column);
-            if(checkPlay != 2 && checkPlay != -1){
-                break;
-            }
-            b->setTurn('X');
         }
+        //add the last pice
+        b->printBoard();
+      break;
+      case alfabeta :
+
+      break;
+
+      case mcts :
+
+      break;
     }
-    //add the last pice
-    b->printBoard();
     return 0;
 }
 
