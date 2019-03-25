@@ -8,6 +8,7 @@
 
 class Minimax{
     private:
+
     public:
         void printt(int num);
         Minimax();
@@ -17,6 +18,7 @@ class Minimax{
         int min_value(Board b, int depth, int limit);
         int minimax(Board *b, int depth);
         int checkPoints(Board b, int row, int col, char turn);
+        int utility(Board b);
 };
 
 #endif
