@@ -157,14 +157,13 @@ int Minimax::minimax(Board *b, int depth){
     }else{
       result = min_value(child,1,depth);
     }
-  }
-
-  if(result > maxValue){
-    maxValue = result;
-    retValue=column;
-  }
-  if(column < 6){
-    column++;
+    if(result > maxValue){
+      maxValue = result;
+      retValue = column;
+    }
+    if(column < 6){
+      column++;
+    }
   }
   return retValue;
 }

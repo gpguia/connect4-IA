@@ -34,7 +34,7 @@ int main(void){
                 Board *aux = new Board();
                 aux = b;
                 Minimax *mm = new Minimax();
-                column = mm->minimax(aux,depth);
+                column = mm->minimax(b,depth);
                 cout << "column: " << column << endl;
                 checkPlay = b->play(column);
                 if(checkPlay != 2 && checkPlay != -1){
