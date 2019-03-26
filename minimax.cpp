@@ -157,8 +157,6 @@ int Minimax::minimax(Board *b, int depth){
     }else{
       result = min_value(child,1,depth);
     }
-    //REIRAR ISSO
-    cout << "Result: " << result << ", Column = " << column+1 << endl;
   }
 
   if(result > maxValue){
@@ -168,7 +166,6 @@ int Minimax::minimax(Board *b, int depth){
   if(column < 6){
     column++;
   }
-  cout << "retValue: " << retValue << endl;
   return retValue;
 }
 
@@ -263,7 +260,6 @@ int Minimax::calcHor(Board b, int row, int col, char turn){
 	for(int j=col;j<col+4;j++){
 		if(turn == '-')
 				turn = b.getBoard().at(row).at(j);
-
 		if(turn != '-'){
 			if(turn == 'X')
 				vsTurn = 'O';
@@ -366,17 +362,13 @@ int Minimax::calcRDig(Board b, int row, int col, char turn){
 int Minimax::utility(Board b){
   int totalHor=0,totalVer=0,totalDig=0,totalRDig=0;
   //Horizontal
-  cout << "Hor " << endl;
   for(int i=0;i<6;i++){
     for(int j=0;j<4;j++){
-      cout << totalHor << endl;
       char t = b.getBoard().at(i).at(j);
-      cout << "t: " << t << endl;
       totalHor += calcHor(b, i, j, t);
     }
   }
   //Vertical
-  cout << "Ver " << endl;
   for(int j=0;j<7;j++){
     for(int i=5;i>2;i--){
       char t = b.getBoard().at(i).at(j);
@@ -384,7 +376,6 @@ int Minimax::utility(Board b){
     }
   }
   //Diagonal
-  cout << "diag " << endl;
 	for(int i=3;i<6;i++){
 		for(int j=0;j<4;j++){
       char t = b.getBoard().at(i).at(j);
@@ -392,7 +383,6 @@ int Minimax::utility(Board b){
 		}
 	}
   //Reverse Diagonal
-  cout << "rdiag " << endl;
 	for(int i=0;i<3;i++){
 		for(int j=0;j<4;j++){
       char t = b.getBoard().at(i).at(j);

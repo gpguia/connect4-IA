@@ -31,8 +31,11 @@ int main(void){
                 b->setTurn('O');
             }else{
                 //AI
+                Board *aux = new Board();
+                aux = b;
                 Minimax *mm = new Minimax();
-                column = mm->minimax(b,5);
+                column = mm->minimax(aux,depth);
+                cout << "column: " << column << endl;
                 checkPlay = b->play(column);
                 if(checkPlay != 2 && checkPlay != -1){
                     break;
