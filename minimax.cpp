@@ -136,14 +136,14 @@ int Minimax::minimax(Board *b, int depth){
   Board child;
   int column=0, result, maxValue = -513, row, retValue;
 
+  //check winplay <!-- TODO -->
   while(!qChild.empty()){
     child = qChild.front();
     qChild.pop();
 
-    for(int i=0;i<6;i++){
-      if(b->getBoard().at(0).at(column) != '-'){
+    //verify if first column is full
+    while(b->getBoard().at(0).at(column) != '-' && column < 6){
         column++;
-      }
     }
 
     if(child.getBoard().at(0).at(column) == 'O'){
@@ -157,6 +157,7 @@ int Minimax::minimax(Board *b, int depth){
     }else{
       result = min_value(child,1,depth);
     }
+    cout << "Result = " << result << ", Column = " << column+1 << "\n";
     if(result > maxValue){
       maxValue = result;
       retValue = column;
