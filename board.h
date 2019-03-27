@@ -12,7 +12,7 @@ class Board{
     private:
          MATRIX board;
          char turn;
-         
+
     public:
         Board();
         virtual ~Board();
@@ -24,7 +24,7 @@ class Board{
         void setTurn(char c);
         int play(int col);
         int getRow(int col);
-        void rmPos(int i, int j);
+        void rmPos(int col);
         int fullCheck();
 };
 

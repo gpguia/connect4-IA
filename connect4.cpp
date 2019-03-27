@@ -48,7 +48,37 @@ int main(void){
         b->printBoard();
       break;
       case alfabeta :
-
+      b->setTurn('X'); //player 1 starts
+      while(true){
+          if(b->getTurn() == 'X'){
+              getPlayerCol(b,&column);
+              checkPlay = b->play(column);
+              while(checkPlay == -1){
+                  cout << "ERROR: invalid column." << endl;
+                  getPlayerCol(b,&column);
+                  checkPlay = b->play(column);
+              }
+              if(checkPlay != 2 && checkPlay != -1){
+                  break;
+              }
+              b->setTurn('O');
+          }else{
+              //AI
+              Board *aux = new Board();
+              aux = b;
+              Alphabeta *ab = new Alphabeta();
+              column = ab->alphabeta(b,-513,513,depth);
+              cout << "Ai: " << column << endl;
+              checkPlay = b->play(column);
+              if(checkPlay != 2 && checkPlay != -1){
+                  break;
+              }
+              free(ab);
+              b->setTurn('X');
+          }
+      }
+      //add the last pice
+      b->printBoard();
       break;
 
       case mcts :
@@ -61,19 +91,19 @@ int main(void){
 void readInput(int *algorithm, int *depth){
     printf("Please select an algorithm: \n\n");
     printf("1 - Minimax\n");
-    printf("2 - Alfa-Beta\n");
+    printf("2 - Alpha-Beta\n");
     printf("3 - Monte Carlo tree search (MCTS)\n");
     scanf("%d",algorithm);
     while(*algorithm != 1 && *algorithm != 2 && *algorithm != 3){
         printf("\nPlease you must select a number from 1 to 3: \n");
         printf("Please select an algorithm: \n\n");
         printf("1 - Minimax\n");
-        printf("2 - Alfa-Beta\n");
+        printf("2 - Alpha-Beta\n");
         printf("3 - Monte Carlo tree search (MCTS)\n");
         scanf("%d",algorithm);
     }
     printf("\nPlease select the difficulty: \n");
-    printf("1 - Very Easy\n2 - Easy\n3 - Medium\n4 - Hard\n5 - A Little harder\n6 - Boss\n");
+    printf("1 - Very Easy\n2 - Easy\n3 - Medium\n4 - Hard\n5 - Harder\n");
     scanf("%d",depth);
     while(*depth != 1 && *depth != 2 && *depth != 3 && *depth != 4 && *depth != 5 && *depth != 6){
         printf("Please select a number from 1 to 6\n");

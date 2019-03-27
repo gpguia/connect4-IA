@@ -20,7 +20,7 @@ void Board::printBoard(){
     for(int i=0;i<6;i++){
         printf("\t\t");
         for(int j=0;j<7;j++){
-            printf("%c ",this->board[i][j]); 
+            printf("%c ",this->board[i][j]);
         }
         printf("\n");
     }
@@ -38,7 +38,7 @@ int Board::getTurn(){
 void Board::setPos(int x, int y, int turn){
     if(turn == 'O')
         this->board[x][y] = 'O';
-    else 
+    else
         this->board[x][y] = 'X';
 }
 
@@ -50,7 +50,7 @@ void Board::setTurn(char c){
 //x and y are the positions where the last pice was played
 int Board::checkWin(int x, int y){
     int count=0;
-    
+
     //check horizontal left
    for(int j=1;j<4;j++){
 		if(x >= 0 && x <= 5 && y-j >= 0 && y-j <=6){
@@ -66,7 +66,7 @@ int Board::checkWin(int x, int y){
         else
             return 0; //IA WON
     }
-        
+
     count=0;
     //check horizontal right
     for(int j=1;j<4;j++){
@@ -83,7 +83,7 @@ int Board::checkWin(int x, int y){
         else
             return 0; //IA WON
     }
-    
+
     //checkVertUp
     count=0;
     for(int i=1;i<4;i++){
@@ -201,17 +201,18 @@ int Board::play(int col){
     this->setPos(row,col,this->turn);
     win = checkWin(row,col);
     if(win == 1){
-        cout << "AI Won :D\n"; 
+        cout << "AI Won :D\n";
         return 1;
     }
     if(win == 0){
-        cout << "Player 1 Won :D\n"; 
+        cout << "Player 1 Won :D\n";
         return 0;
     }
     return 2;
 }
 
-void Board::rmPos(int i, int j){
-    this->setPos(i,j,'-');
+void Board::rmPos(int col){
+    int row = getRow(col);
+    row++;
+    this->setPos(row,col,'-');
 }
-
