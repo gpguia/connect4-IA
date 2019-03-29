@@ -146,7 +146,6 @@ int Minimax::min_value(Board b, int depth, int limit){
     if(col < 6){
       col++;
     }
-    return minValue;
   }
   return minValue;
 }
