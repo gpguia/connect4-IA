@@ -1,10 +1,7 @@
 #include "minimax.h"
 
 Minimax::Minimax(){
-  pts[0] = 0;
-  pts[1] = 1;
-  pts[2] = 10;
-  pts[3] = 50;
+
 }
 
 Minimax::~Minimax(){
@@ -25,110 +22,6 @@ queue <Board> Minimax::children(Board *b, char turn){
     }
   }
   return q;
-}
-
-int Minimax::checkPoints(Board b, int row, int col, char turn){
-  int horLeft=0,horRight=0,verUp=0,verDown=0,digLeft=0,digRight=0,rDiagLeft=0,rDiagRight=0;
-  int totalHor, totalVer, totalDig, totalRDig;
-
-//horizontalLeft
-  for(int j=1;j<4;j++){
-    if(row >= 0 && row <= 5 && col-j >= 0 && col-j <= 6){
-      if(b.getBoard().at(row).at(col-j) == turn)
-        horLeft++;
-      else
-        break;
-    }else{
-      break;
-    }
-
-  }
-//horizontalRight
-  for(int j=1;j<4;j++){
-    if(row >= 0 && row < 6 && col+j >= 0 && col+j < 7){
-      if(b.getBoard().at(row).at(col+j) == turn)
-        horRight++;
-      else
-        break;
-    }else{
-      break;
-    }
-  }
-//verticalUp
-  for(int i=1;i<4;i++){
-    if(row-i >= 0 && row-i <= 5 && col >= 0 && col <= 6){
-      if(b.getBoard().at(row-i).at(col) == turn)
-        verUp++;
-      else
-        break;
-      }else{
-        break;
-      }
-    }
-//verticalDown
-  for(int i=1;i<4;i++){
-    if(row+i >= 0 && row+i <= 5 && col >= 0 && col <= 6){
-      if(b.getBoard().at(row+i).at(col) == turn)
-        verDown++;
-      else
-        break;
-    }else{
-      break;
-    }
-  }
-//diagLeft
-  for(int i=1;i<4;i++){
-    if(row+i < 6 && col-i >= 0){
-      if(b.getBoard().at(row+i).at(col-i) == turn)
-        digLeft++;
-      else
-        break;
-    }else{
-      break;
-    }
-  }
-
-//diagRight
-  for(int i=1;i<4;i++){
-    if(row-i >= 0 && col+i < 7){
-      if(b.getBoard().at(row-i).at(col+i) == turn)
-        digRight++;
-      else
-        break;
-    }else{
-      break;
-    }
-  }
-//reverseDiagLeft
-  for(int i=1;i<4;i++){
-    if(row+i < 6 && col+i < 7){
-      if(b.getBoard().at(row+i).at(col+i) == turn)
-        rDiagLeft++;
-      else
-        break;
-    }else{
-      break;
-    }
-  }
-
-//reverseDiagRight
-  for(int i=1;i<4;i++){
-      if(row-i >= 0 && col-i >= 0){
-        if(b.getBoard().at(row-i).at(col-i) == turn)
-          rDiagRight++;
-        else
-          break;
-      }else{
-        break;
-      }
-  }
-
-  totalHor = horLeft + horRight + 1;
-  totalVer = verUp + verDown + 1;
-  totalDig = digLeft + digRight + 1;
-  totalRDig = rDiagLeft + rDiagRight+ 1;
-  return max(totalHor, max(totalVer, max(totalDig,totalRDig)));
-
 }
 
 int Minimax::minimax(Board *b, int depth){
@@ -160,8 +53,8 @@ int Minimax::minimax(Board *b, int depth){
     }else{
       row = child.getRow(column);
     }
-    int c = checkPoints(child,row,column,'O');
-    if(c >= 4){
+
+    if(child.checkPoints(row,column,'O') >= 4){
       result = 512;
     }else{
       result = min_value(child,1,depth);
@@ -185,7 +78,7 @@ int Minimax::max_value(Board b, int depth, int limit){
   int col=0,row,result,maxValue=-513;
 
   if(depth == limit){
-    return utility(b);
+    return b.utility();
   }
 
   while(!qChild.empty()){
@@ -202,7 +95,7 @@ int Minimax::max_value(Board b, int depth, int limit){
       row = child.getRow(col);
     }
 
-    if(checkPoints(child,row,col,'O') >= 4){
+    if(child.checkPoints(row,col,'O') >= 4){
       result = 512;
     }else{
       result = min_value(child,depth+1,limit);
@@ -224,8 +117,7 @@ int Minimax::min_value(Board b, int depth, int limit){
   int col=0, row, result, minValue = 513;
 
   if(depth == limit){
-    int u = utility(b);
-    return u;
+    return b.utility();
   }
 
   while(!qChild.empty()){
@@ -241,7 +133,12 @@ int Minimax::min_value(Board b, int depth, int limit){
       row = child.getRow(col);
     }
 
-    if(checkPoints(child,row,col,'X') >= 4){
+    /*if(checkPoints(child,row,col,'X') >= 4){
+      result = -512;
+    }else{
+      result = max_value(child,depth+1,limit);
+    }*/
+    if(child.checkPoints(row,col,'X') >= 4){
       result = -512;
     }else{
       result = max_value(child,depth+1,limit);
@@ -259,6 +156,7 @@ int Minimax::min_value(Board b, int depth, int limit){
   return minValue;
 }
 
+/*
 int Minimax::calcHor(Board b, int row, int col, char turn){
   int total=0;
   char vsTurn;
@@ -399,3 +297,4 @@ int Minimax::utility(Board b){
 	}
   return totalHor + totalVer + totalDig + totalRDig;
 }
+*/

@@ -8,7 +8,10 @@ Board::Board(){
         }
         board.push_back(tmp);
     }
-    this->turn = 'O';
+    pts[0] = 0;
+    pts[1] = 1;
+    pts[2] = 10;
+    pts[3] = 50;
 }
 
 Board::~Board() {
@@ -215,4 +218,250 @@ void Board::rmPos(int col){
     int row = getRow(col);
     row++;
     this->setPos(row,col,'-');
+}
+
+int Board::calcHor(int row, int col, char turn){
+  int total=0;
+  char vsTurn;
+
+	for(int j=col;j<col+4;j++){
+		if(turn == '-')
+				turn = this->board.at(row).at(j);
+		if(turn != '-'){
+			if(turn == 'X')
+				vsTurn = 'O';
+			else
+				vsTurn = 'X';
+
+
+			if(this->board.at(row).at(j) == vsTurn){
+				return 0;
+			}else if(this->board.at(row).at(j) == turn){
+				total++;
+			}
+		}
+	}
+
+	if(turn == 'X'){
+		return -pts[total];
+	}
+	return pts[total];
+}
+
+int Board::calcVert(int row, int col, char turn){
+  int total=0,i,j;
+	char vsTurn;
+
+  if(turn == 'X')
+      vsTurn = 'O';
+  else
+      vsTurn = 'X';
+
+	for(i = row; i>row-4;i--){
+		if(this->board.at(i).at(col) == vsTurn){
+			return 0;
+		}else if(this->board.at(i).at(col) == turn){
+			total++;
+		}
+	}
+
+	if(turn == 'X'){
+		return -pts[total];
+	}
+	return pts[total];
+}
+
+int Board::calcDig(int row, int col, char turn){
+  int total=0;
+  char vsTurn;
+
+  for(int k=0;k<4;k++){
+  	if(turn == '-')
+  		turn=this->board.at(row-k).at(col+k);
+
+  	if(turn != '-'){
+
+  		if(turn == 'X')
+  			vsTurn = 'O';
+  		else
+  			vsTurn = 'X';
+
+  		if(this->board.at(row-k).at(col+k) == vsTurn)
+  			return 0;
+  		else if(this->board.at(row-k).at(col+k) == turn)
+  			total++;
+  	}
+  }
+
+  if(turn == 'X'){
+  	return -pts[total];
+  }
+  return pts[total];
+}
+
+int Board::calcRDig(int row, int col, char turn){
+  int total=0;
+  char vsTurn;
+
+
+  for(int k=0;k<4;k++){
+    if(turn == '-')
+      turn=this->board.at(row+k).at(col+k);
+    if(turn != '-'){
+      if(turn == 'X')
+        vsTurn = 'O';
+      else
+        vsTurn = 'X';
+
+      if(this->board.at(row+k).at(col+k) == vsTurn)
+        return 0;
+      else if(this->board.at(row+k).at(col+k) == turn)
+        total++;
+    }
+  }
+
+  if(turn == 'X'){
+    return -pts[total];
+  }
+  return pts[total];
+}
+
+
+int Board::utility(){
+  int totalHor=0,totalVer=0,totalDig=0,totalRDig=0;
+  //Horizontal
+  for(int i=0;i<6;i++){
+    for(int j=0;j<4;j++){
+      char t = this->board.at(i).at(j);
+      totalHor += calcHor(i, j, t);
+    }
+  }
+  //Vertical
+  for(int j=0;j<7;j++){
+    for(int i=5;i>2;i--){
+      if(this->board.at(i).at(j) != '-'){
+        char t = this->board.at(i).at(j);
+        totalVer += calcVert(i, j, t);
+      }
+    }
+  }
+  //Diagonal
+	for(int i=3;i<6;i++){
+		for(int j=0;j<4;j++){
+      char t = this->board.at(i).at(j);
+			totalDig += calcDig(i, j, t);
+		}
+	}
+  //Reverse Diagonal
+	for(int i=0;i<3;i++){
+		for(int j=0;j<4;j++){
+      char t = this->board.at(i).at(j);
+			totalRDig += calcRDig(i, j, t);
+		}
+	}
+  return totalHor + totalVer + totalDig + totalRDig;
+}
+
+int Board::checkPoints(int row, int col, char turn){
+  int horLeft=0,horRight=0,verUp=0,verDown=0,digLeft=0,digRight=0,rDiagLeft=0,rDiagRight=0;
+  int totalHor, totalVer, totalDig, totalRDig;
+
+//horizontalLeft
+  for(int j=1;j<4;j++){
+    if(row >= 0 && row <= 5 && col-j >= 0 && col-j <= 6){
+      if(this->board.at(row).at(col-j) == turn)
+        horLeft++;
+      else
+        break;
+    }else{
+      break;
+    }
+
+  }
+//horizontalRight
+  for(int j=1;j<4;j++){
+    if(row >= 0 && row < 6 && col+j >= 0 && col+j < 7){
+      if(this->board.at(row).at(col+j) == turn)
+        horRight++;
+      else
+        break;
+    }else{
+      break;
+    }
+  }
+//verticalUp
+  for(int i=1;i<4;i++){
+    if(row-i >= 0 && row-i <= 5 && col >= 0 && col <= 6){
+      if(this->board.at(row-i).at(col) == turn)
+        verUp++;
+      else
+        break;
+      }else{
+        break;
+      }
+    }
+//verticalDown
+  for(int i=1;i<4;i++){
+    if(row+i >= 0 && row+i <= 5 && col >= 0 && col <= 6){
+      if(this->board.at(row+i).at(col) == turn)
+        verDown++;
+      else
+        break;
+    }else{
+      break;
+    }
+  }
+//diagLeft
+  for(int i=1;i<4;i++){
+    if(row+i < 6 && col-i >= 0){
+      if(this->board.at(row+i).at(col-i) == turn)
+        digLeft++;
+      else
+        break;
+    }else{
+      break;
+    }
+  }
+
+//diagRight
+  for(int i=1;i<4;i++){
+    if(row-i >= 0 && col+i < 7){
+      if(this->board.at(row-i).at(col+i) == turn)
+        digRight++;
+      else
+        break;
+    }else{
+      break;
+    }
+  }
+//reverseDiagLeft
+  for(int i=1;i<4;i++){
+    if(row+i < 6 && col+i < 7){
+      if(this->board.at(row+i).at(col+i) == turn)
+        rDiagLeft++;
+      else
+        break;
+    }else{
+      break;
+    }
+  }
+
+//reverseDiagRight
+  for(int i=1;i<4;i++){
+      if(row-i >= 0 && col-i >= 0){
+        if(this->board.at(row-i).at(col-i) == turn)
+          rDiagRight++;
+        else
+          break;
+      }else{
+        break;
+      }
+  }
+
+  totalHor = horLeft + horRight + 1;
+  totalVer = verUp + verDown + 1;
+  totalDig = digLeft + digRight + 1;
+  totalRDig = rDiagLeft + rDiagRight+ 1;
+  return max(totalHor, max(totalVer, max(totalDig,totalRDig)));
+
 }
