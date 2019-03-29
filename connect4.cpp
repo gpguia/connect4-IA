@@ -35,7 +35,7 @@ int main(void){
                 aux = b;
                 Minimax *mm = new Minimax();
                 column = mm->minimax(b,depth);
-                cout << "column: " << column << endl;
+                cout << "AI: " << column << endl;
                 checkPlay = b->play(column);
                 if(checkPlay != 2 && checkPlay != -1){
                     break;
@@ -68,7 +68,7 @@ int main(void){
               aux = b;
               Alphabeta *ab = new Alphabeta();
               column = ab->alphabeta(b,-513,513,depth);
-              cout << "Ai: " << column << endl;
+              cout << "AI: " << column << endl;
               checkPlay = b->play(column);
               if(checkPlay != 2 && checkPlay != -1){
                   break;
@@ -77,12 +77,11 @@ int main(void){
               b->setTurn('X');
           }
       }
-      //add the last pice
       b->printBoard();
       break;
-
       case mcts :
-
+      cout << "Not working yet, sorry." << endl;
+      MCTS *mcts = new MCTS();
       break;
     }
     return 0;
@@ -103,7 +102,7 @@ void readInput(int *algorithm, int *depth){
         scanf("%d",algorithm);
     }
     printf("\nPlease select the difficulty: \n");
-    printf("1 - Very Easy\n2 - Easy\n3 - Medium\n4 - Hard\n5 - Harder\n");
+    printf("1 - Very Easy\n2 - Easy\n3 - Medium\n4 - Hard\n5 - Harder\n6 - Boss (It will take a while)\n");
     scanf("%d",depth);
     while(*depth != 1 && *depth != 2 && *depth != 3 && *depth != 4 && *depth != 5 && *depth != 6){
         printf("Please select a number from 1 to 6\n");
@@ -117,4 +116,43 @@ void getPlayerCol(Board *b, int *col){
     printf("Type column number: ");
     scanf("%d",col);
     *col = *col - 1;
+}
+
+//this funtion was taken from: https://stackoverflow.com/questions/669438/how-to-get-memory-usage-at-runtime-using-c
+//just to check memory usage, LINUX based, not sure if its working in MAC
+void process_mem_usage(double& vm_usage, double& resident_set)
+{
+   //using std::ios_base;
+   //using std::ifstream;
+   //using std::string;
+
+   vm_usage     = 0.0;
+   resident_set = 0.0;
+
+   // 'file' stat seems to give the most reliable results
+   //
+   ifstream stat_stream("/proc/self/stat",ios_base::in);
+
+   // dummy vars for leading entries in stat that we don't care about
+   //
+   string pid, comm, state, ppid, pgrp, session, tty_nr;
+   string tpgid, flags, minflt, cminflt, majflt, cmajflt;
+   string utime, stime, cutime, cstime, priority, nice;
+   string O, itrealvalue, starttime;
+
+   // the two fields we want
+   //
+   unsigned long vsize;
+   long rss;
+
+   stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr
+               >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt
+               >> utime >> stime >> cutime >> cstime >> priority >> nice
+               >> O >> itrealvalue >> starttime >> vsize >> rss; // don't care about the rest
+
+   stat_stream.close();
+
+   long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // in case x86-64 is configured to use 2MB pages
+   vm_usage     = vsize / 1024.0;
+   resident_set = rss * page_size_kb;
 }

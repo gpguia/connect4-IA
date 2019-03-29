@@ -3,8 +3,6 @@
 
 #include "board.h"
 #include <queue>
-#include <ctime>
-#include <cstdlib>
 
 class Alphabeta{
 private:

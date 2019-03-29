@@ -1,4 +1,4 @@
-OBJS=connect4.o board.o minimax.o alphabeta.o
+OBJS=connect4.o board.o minimax.o alphabeta.o mcts.o
 CC=g++
 PROGRAM=./connect4
 CFLAGS=-I.

@@ -35,7 +35,7 @@ int Alphabeta::alphabeta(Board *b, int alpha, int beta, int depth){
     if(child.getBoard().at(0).at(column) == 'O'){
       row = 0;
     }else{
-      row = child.getRow(column);
+      row = child.getRow(column)+1;
     }
 
     if(child.checkPoints(row,column,'O') >= 4){
@@ -80,7 +80,7 @@ int Alphabeta::max_value(Board b, int alpha, int beta, int depth, int limit){
     if(child.getBoard().at(0).at(col) == 'O'){
       row = 0;
     }else{
-      row = child.getRow(col);
+      row = child.getRow(col)+1;
     }
 
     if(child.checkPoints(row,col,'O') >= 4){
@@ -122,7 +122,7 @@ int Alphabeta::min_value(Board b, int alpha, int beta, int depth, int limit){
     if(child.getBoard().at(0).at(col) == 'X'){
       row = 0;
     }else{
-      row = child.getRow(col);
+      row = child.getRow(col)+1;
     }
 
     if(child.checkPoints(row,col,'X') >= 4){
@@ -143,7 +143,6 @@ int Alphabeta::min_value(Board b, int alpha, int beta, int depth, int limit){
     if(col < 6){
       col++;
     }
-    return minValue;
   }
   return minValue;
 }
