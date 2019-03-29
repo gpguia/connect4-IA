@@ -91,7 +91,6 @@ int Board::checkWin(int x, int y){
     count=0;
     for(int i=1;i<4;i++){
 		if(x-i >= 0 && x-i <= 5 && y >= 0 && y <=6){
-		//if(posi-i>=0){
 			if(this->board[x-i][y] == this->turn){
 				count++;
 			}
@@ -109,7 +108,6 @@ int Board::checkWin(int x, int y){
     count=0;
     for(int i=1;i<4;i++){
 		if(x+i >= 0 && x+i <= 5 && y >= 0 && y <=6){
-		//if(posi+i <= 5){
 			if(this->board[x+i][y] == this->turn){
 				count++;
 			}
@@ -462,6 +460,10 @@ int Board::checkPoints(int row, int col, char turn){
   totalVer = verUp + verDown + 1;
   totalDig = digLeft + digRight + 1;
   totalRDig = rDiagLeft + rDiagRight+ 1;
+  //cout << "totalHor: " << totalHor << endl;
+  //cout << "totalVer: " << totalVer << endl;
+  //cout << "totalDig: " << totalDig << endl;
+  //cout << "totalRDig: " << totalRDig << endl;
   return max(totalHor, max(totalVer, max(totalDig,totalRDig)));
 
 }
