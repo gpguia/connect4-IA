@@ -17,6 +17,7 @@ public:
   int mcts(Board *b);
 
   void startTree(Board *b, char turn);
+  pair<int,int> selection();
 };
 
 #endif
