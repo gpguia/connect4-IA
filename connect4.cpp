@@ -18,7 +18,9 @@ int main(void){
 
     readInput(&algorithm,&depth);
     switch(algorithm){
+
       case minimax :
+
         b->setTurn('X'); //player 1 starts
         while(true){
             if(b->getTurn() == 'X'){
@@ -64,7 +66,9 @@ int main(void){
         //add the last pice
         b->printBoard();
       break;
+
       case alfabeta :
+
       b->setTurn('X'); //player 1 starts
       while(true){
           if(b->getTurn() == 'X'){
@@ -110,9 +114,51 @@ int main(void){
       }
       b->printBoard();
       break;
+
       case mcts :
-      cout << "Not working yet, sorry." << endl;
-      MCTS *mcts = new MCTS();
+
+      b->setTurn('X'); //player 1 starts
+      while(true){
+          if(b->getTurn() == 'X'){
+              getPlayerCol(b,&column);
+              checkPlay = b->play(column);
+              while(checkPlay == -1){
+                  cout << "ERROR: invalid column." << endl;
+                  getPlayerCol(b,&column);
+                  checkPlay = b->play(column);
+              }
+              if(checkPlay != 2 && checkPlay != -1){
+                  break;
+              }
+              b->setTurn('O');
+          }else{
+              //AI
+              Board *aux = new Board();
+              aux = b;
+              //start timer
+              tStart = clock();
+              MCTS *mc = new MCTS();
+
+              /* MEMORY USAGE */
+              double nowRSS, nowVM;
+              process_mem_usage(nowVM,nowRSS);
+              if(nowVM > vm)
+                vm = nowVM;
+
+              if(nowRSS > rss)
+                rss = nowRSS;
+              tEnd = clock();
+              cout << "\nAI Selected column: " << column << endl;
+              cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
+              cout << "VM: " << vm << "; RSS: " << rss << endl;
+              checkPlay = b->play(column);
+              if(checkPlay != 2 && checkPlay != -1){
+                  break;
+              }
+              delete(mc);
+              b->setTurn('X');
+          }
+      }
       break;
     }
     return 0;

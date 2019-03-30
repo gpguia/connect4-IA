@@ -13,6 +13,10 @@ class Board{
          MATRIX board;
          char turn;
          int pts[4];
+         int calcHor(int row, int col, char turn);
+         int calcVert(int row, int col, char turn);
+         int calcDig(int row, int col, char turn);
+         int calcRDig(int row, int col, char turn);
     public:
         Board();
         virtual ~Board();
@@ -27,10 +31,6 @@ class Board{
         void rmPos(int col);
         int fullCheck();
         int utility();
-        int calcHor(int row, int col, char turn);
-        int calcVert(int row, int col, char turn);
-        int calcDig(int row, int col, char turn);
-        int calcRDig(int row, int col, char turn);
         int checkPoints(int row, int col, char turn);
 };
 

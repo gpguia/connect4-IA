@@ -3,11 +3,11 @@
 
 #include "board.h"
 #include <cmath>
-#include <map>
 
-#define TREE map<pair<int,int>,Board>
 #define MP make_pair
 
+
+const double EXPLOR_PARAM = 1.3;
 
 struct node{
   node *parent;
@@ -31,11 +31,14 @@ struct node{
 
 class MCTS{
 private:
+  void clear(node *n);
+  double eval(node *n, int num, char turn);
+  int select_child(node *n, char turn);
+  node *select(node *root, Board *b);
 public:
   MCTS();
   virtual ~MCTS();
   int mcts(Board *b);
-  void clear(node* n);
 
 };
 
