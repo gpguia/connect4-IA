@@ -48,5 +48,6 @@ node *MCTS::select(node *root, Board *b){
 
   int best = select_child(root,b->getTurn());
 
-  return select(root->children[best],b);
+  return select(root->children[best],);
+
 }
