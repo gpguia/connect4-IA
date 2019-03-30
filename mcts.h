@@ -8,16 +8,35 @@
 #define TREE map<pair<int,int>,Board>
 #define MP make_pair
 
+
+struct node{
+  node *parent;
+  int games;
+  int wins;
+  char turn;
+
+  vector<node*> children;
+
+  node(node *n, char t){
+    parent = n;
+    turn = t;
+    games=0;
+    wins=0;
+  }
+
+  bool hasChildren(){
+    return !children.empty();
+  }
+};
+
 class MCTS{
 private:
-  TREE tree[7]; //create a vector of map for the childs.
 public:
   MCTS();
   virtual ~MCTS();
-  int mcts(Board *b);
+  int mcts(Board *b,);
+  void clear(node* n);
 
-  void startTree(Board *b, char turn);
-  pair<int,int> selection();
 };
 
 #endif

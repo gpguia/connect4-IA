@@ -40,7 +40,7 @@ int main(void){
                 if(checkPlay != 2 && checkPlay != -1){
                     break;
                 }
-                free(mm);
+                delete(mm);
                 b->setTurn('X');
             }
         }
