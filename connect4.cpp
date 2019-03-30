@@ -2,15 +2,19 @@
 
 using namespace std;
 
+double vm=0, rss=0; //to get maximum mem usage
+
 enum{
   minimax = 1,
   alfabeta = 2,
   mcts = 3
 };
 
+
 int main(void){
     int algorithm, depth, row, column, checkPlay, win;
     Board *b = new Board();
+    clock_t tStart,tEnd;
 
     readInput(&algorithm,&depth);
     switch(algorithm){
@@ -33,9 +37,22 @@ int main(void){
                 //AI
                 Board *aux = new Board();
                 aux = b;
+                //start timer
+                tStart = clock();
                 Minimax *mm = new Minimax();
                 column = mm->minimax(b,depth);
-                cout << "AI: " << column << endl;
+                /* MEMORY USAGE */
+              	double nowRSS, nowVM;
+              	process_mem_usage(nowVM,nowRSS);
+              	if(nowVM > vm)
+              		vm = nowVM;
+
+              	if(nowRSS > rss)
+                  rss = nowRSS;
+                tEnd = clock();
+                cout << "\nAI Selected column: " << column << endl;
+                cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
+                cout << "VM: " << vm << "; RSS: " << rss << endl;
                 checkPlay = b->play(column);
                 if(checkPlay != 2 && checkPlay != -1){
                     break;
@@ -67,13 +84,27 @@ int main(void){
               Board *aux = new Board();
               aux = b;
               Alphabeta *ab = new Alphabeta();
+              //start timer
+              tStart = clock();
+
               column = ab->alphabeta(b,-513,513,depth);
-              cout << "AI: " << column << endl;
+              /* MEMORY USAGE */
+              double nowRSS, nowVM;
+              process_mem_usage(nowVM,nowRSS);
+              if(nowVM > vm)
+                vm = nowVM;
+
+              if(nowRSS > rss)
+                rss = nowRSS;
+              tEnd = clock();
+              cout << "\nAI Selected column: " << column << endl;
+              cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
+              cout << "VM: " << vm << "; RSS: " << rss << endl;
               checkPlay = b->play(column);
               if(checkPlay != 2 && checkPlay != -1){
                   break;
               }
-              free(ab);
+              delete(ab);
               b->setTurn('X');
           }
       }

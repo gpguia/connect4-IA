@@ -34,7 +34,7 @@ private:
 public:
   MCTS();
   virtual ~MCTS();
-  int mcts(Board *b,);
+  int mcts(Board *b);
   void clear(node* n);
 
 };
