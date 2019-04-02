@@ -33,7 +33,8 @@ class Board{
         int utility();
         int checkPoints(int row, int col, char turn);
         bool isGameOver();
-        void playMCTS(int col, char turn);
+        void playMCTS(int col);
+        Board* clone();
 };
 
 #endif

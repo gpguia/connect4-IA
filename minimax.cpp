@@ -43,7 +43,7 @@ int Minimax::minimax(Board *b, int depth){
     child = qChild.front();
     qChild.pop();
 
-    //verify if first column is full
+    //verify if column is full
     while(b->getBoard().at(0).at(column) != '-' && column < 6){
         column++;
     }

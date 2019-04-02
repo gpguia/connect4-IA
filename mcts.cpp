@@ -10,6 +10,21 @@ MCTS::~MCTS(){
 }
 
 int MCTS::mcts(Board *b){
+  node *root = new node(NULL,b->getTurn());
+  node *n, *child;
+  Board *clone1,*clone2;
+  int res;
+
+  while(1){
+    clone1 = b->clone();
+    n = select(root,clone1);
+    clone2 = clone1->clone();
+
+    expand(n,clone1);
+    res = simulate(clone2,n->turn,120);
+
+  }
+
   return 0;
 }
 
@@ -63,7 +78,7 @@ int MCTS::simulate(Board *b, char turn, int depth_max){
   if(!depth_max) return 0;
 
   int r = rand() % 7;
-  b->playMCTS(r,turn);
+  b->playMCTS(r);
 
   if(turn == 'X'){
     return simulate(b,'O',depth_max-1);
@@ -71,7 +86,7 @@ int MCTS::simulate(Board *b, char turn, int depth_max){
   return simulate(b,'X',depth_max-1);
 }
 
-void MCTS::backpropagate(nove *n, int win, char turn){
+void MCTS::backpropagate(node *n, int win, char turn){
   if(!n->parent) return;
 
   if(win == 1 || turn == 'X')
