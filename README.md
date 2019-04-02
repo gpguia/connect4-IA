@@ -16,7 +16,7 @@ To run just type:
 ```
 ./connect4
 ```
-It will ask you to select wich AI you would like to play against.
+It will ask you to select which AI you would like to play against.
 
 ```
 1 - Minimax
