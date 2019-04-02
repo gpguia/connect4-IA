@@ -37,8 +37,7 @@ int main(void){
                 b->setTurn('O');
             }else{
                 //AI
-                Board *aux = new Board();
-                aux = b;
+
                 //start timer
                 tStart = clock();
                 Minimax *mm = new Minimax();
@@ -85,8 +84,7 @@ int main(void){
               b->setTurn('O');
           }else{
               //AI
-              Board *aux = new Board();
-              aux = b;
+
               Alphabeta *ab = new Alphabeta();
               //start timer
               tStart = clock();
@@ -133,12 +131,11 @@ int main(void){
               b->setTurn('O');
           }else{
               //AI
-              Board *aux = new Board();
-              aux = b;
+
               //start timer
               tStart = clock();
               MCTS *mc = new MCTS();
-              column = mc->mcts(b);
+              column = mc->mcts(b,100000);
               /* MEMORY USAGE */
               double nowRSS, nowVM;
               process_mem_usage(nowVM,nowRSS);
