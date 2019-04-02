@@ -10,7 +10,6 @@ MCTS::~MCTS(){
 }
 
 int MCTS::mcts(Board *b){
-
   return 0;
 }
 
@@ -48,6 +47,40 @@ node *MCTS::select(node *root, Board *b){
 
   int best = select_child(root,b->getTurn());
 
-  return select(root->children[best],);
+  return select(root->children[best],b);
 
+}
+
+void MCTS::expand(node *n, Board *b){
+
+}
+
+int MCTS::simulate(Board *b, char turn, int depth_max){
+  int end = b->isGameOver();
+  if(end)
+    return end;
+
+  if(!depth_max) return 0;
+
+  int r = rand() % 7;
+  b->playMCTS(r,turn);
+
+  if(turn == 'X'){
+    return simulate(b,'O',depth_max-1);
+  }
+  return simulate(b,'X',depth_max-1);
+}
+
+void MCTS::backpropagate(nove *n, int win, char turn){
+  if(!n->parent) return;
+
+  if(win == 1 || turn == 'X')
+    n->wins+=win;
+
+  n->games+=2;
+
+  if(turn == 'X'){
+    backpropagate(n->parent,win,'O');
+  }
+  backpropagate(n->parent,win,'X');
 }

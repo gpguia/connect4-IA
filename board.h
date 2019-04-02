@@ -32,6 +32,8 @@ class Board{
         int fullCheck();
         int utility();
         int checkPoints(int row, int col, char turn);
+        bool isGameOver();
+        void playMCTS(int col, char turn);
 };
 
 #endif

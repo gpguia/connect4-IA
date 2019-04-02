@@ -13,7 +13,6 @@ private:
   int max_value(Board b, int depth, int limit);
   int min_value(Board b, int depth, int limit);
 public:
-  void printt(int num);
   Minimax();
   virtual ~Minimax();
   int minimax(Board *b, int depth);

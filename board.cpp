@@ -460,10 +460,23 @@ int Board::checkPoints(int row, int col, char turn){
   totalVer = verUp + verDown + 1;
   totalDig = digLeft + digRight + 1;
   totalRDig = rDiagLeft + rDiagRight+ 1;
-  //cout << "totalHor: " << totalHor << endl;
-  //cout << "totalVer: " << totalVer << endl;
-  //cout << "totalDig: " << totalDig << endl;
-  //cout << "totalRDig: " << totalRDig << endl;
   return max(totalHor, max(totalVer, max(totalDig,totalRDig)));
 
+}
+
+bool Board::isGameOver(){
+  for(int i=0;i<7;i++){
+    if(this->board.at(0).at(i) == '-'){
+      return false;
+    }
+  }
+  return true;
+}
+
+void Board::playMCTS(int col, char turn){
+  while(this->board.at(0).at(col) != '-' && col < 6){
+      col++;
+  }
+  int row = getRow(col);
+  this->setPos(row,col,turn);
 }
