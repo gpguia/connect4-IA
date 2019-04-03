@@ -501,3 +501,7 @@ Board *Board::clone(){
   }
   return b2;
 }
+
+bool Board::isColumnFree(int col){
+  return !(this->board.at(0).at(col) == '-');
+}

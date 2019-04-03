@@ -36,9 +36,9 @@ private:
   double eval(node *n, int num);
   int select_child(node *n);
   node *select(node *root, Board *b);
-  void expand(node *n, Board *b);
-  int simulate(Board *b, char turn, int depth_max);
-  void backpropagate(node *n, int win, char turn);
+  node *expand(node *n, Board *b);
+  int simulate(Board *b);
+  void backpropagate(node *n, int win);
 public:
   MCTS();
   virtual ~MCTS();

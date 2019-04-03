@@ -15,20 +15,30 @@ int MCTS::mcts(Board *b, int time_limit){
 
   node *root = new node(NULL,b);
   node *n, *child;
-  Board *clone1,*clone2;
   int res=-1;
-
+  node *clone1,clone2;
   while(clock() - start_time < time_limit){
     clone1 = b->clone();
     n = select(root,clone1);
+    if(n == NULL){
+      continue;
+    }
     clone2 = clone1->clone();
 
     expand(n,clone1);
-    res = simulate(clone2,b->getTurn(),42);
-
+    res = simulate(clone1);
+    backpropagate(clone1,res);
+  }
+  int bestResultNode=-1;
+  for(int i=0;i<7;i++){
+    if(root->children[i] != NULL){
+      if(bestResultNode == -1 || root->children[i]->games > root->children[bestResultNode]->games){
+        bestResultNode=i;
+      }
+    }
   }
 
-  return 0;
+  return bestResultNode;
 }
 
 double MCTS::eval(node *n, int num){
@@ -69,45 +79,51 @@ node *MCTS::select(node *root, Board *b){
 
 }
 
-void MCTS::expand(node *n,Board *b){
-
-  for(int j=0;j<7;j++){
-    if(n->board->getBoard().at(0).at(j) != '-'){
-      n->children.push_back(new node(n,b));
+node *MCTS::expand(node *n,Board *b){
+  vector<int> arrToVisit;
+  for(int i=0;i<7;i++){
+    if(n->children[i] == NULL && n->board->isColumnFree(i)){
+      arrToVisit.push_back(i);
     }
   }
+  int randNum = rand() % arrToVisit.size();
+  int k = arrToVisit[randNum];
+  Board *b3 = n->board->clone();
+  b3->playMCTS(k);
+  n->children[k] = new node(n,b3);
+  return n->children[k];
 }
 
-int MCTS::simulate(Board *b, char turn, int depth_max){
+int MCTS::simulate(Board *b){
+  int randCol=0;
+  Board *b2 = b->clone();
+
   int countPossibleMoves=0;
-  int end = b->isGameOver();
-  if(end)
-    return end;
-
-  if(!depth_max) return 0;
-
   for(int i=0;i<7;i++){
     if(b->getBoard().at(0).at(i) == '-'){
       countPossibleMoves++;
     }
   }
 
-  int r = rand() % countPossibleMoves;
-  b->playMCTS(r);
-
-  return simulate(b,b->getTurn(),depth_max-1);
+  while(b2->isGameOver()){
+    randCol = rand() % countPossibleMoves;
+    int row = b2->getRow(randCol);
+    b2->playMCTS(randCol);
+    int win = b2->checkWin(row,randCol);
+    if(win == 1){
+      return 1; //AI WON
+    }else if(win == 0){
+      return 0; //PLAYER WON
+    }
+  }
+  return -1; //draw
 }
 
-void MCTS::backpropagate(node *n, int win, char turn){
-  if(!n->parent) return;
-
-  if(win == 1 || turn == 'X')
-    n->wins+=win;
-
-  n->games+=2;
-
-  if(turn == 'X'){
-    backpropagate(n->parent,win,'O');
+void MCTS::backpropagate(node *n, int win){
+  node *cur = n;
+  while(cur != NULL){
+    cur->games++;
+    cur->wins+=win;
+    cur = cur->parent;
   }
-  backpropagate(n->parent,win,'X');
 }

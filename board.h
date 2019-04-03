@@ -35,6 +35,7 @@ class Board{
         bool isGameOver();
         void playMCTS(int col);
         Board* clone();
+        bool isColumnFree(int col);
 };
 
 #endif
