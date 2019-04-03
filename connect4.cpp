@@ -176,6 +176,9 @@ void readInput(int *algorithm, int *depth){
         printf("3 - Monte Carlo tree search (MCTS)\n");
         scanf("%d",algorithm);
     }
+    if(*algorithm == 3){
+      return;
+    }
     printf("\nPlease select the difficulty: \n");
     printf("1 - Very Easy\n2 - Easy\n3 - Medium\n4 - Hard\n5 - Harder\n6 - Boss (It will take a while)\n");
     scanf("%d",depth);

@@ -22,9 +22,9 @@ int MCTS::mcts(Board *b, int time_limit){
       continue;
     }
 
-    expand(n);
-    res = simulate(n);
-    backpropagate(n,res);
+    child = expand(n);
+    res = simulate(child);
+    backpropagate(child,res);
   }
   int bestResultNode=-1;
   for(int i=0;i<7;i++){
@@ -80,21 +80,20 @@ node *MCTS::expand(node *n){
   Board *b3 = n->board->clone();
   b3->playMCTS(k);
   n->children[k] = new node(n,b3);
+  delete(b3);
   return n->children[k];
 }
 
 int MCTS::simulate(node *n){
   int randCol=0;
   Board *b2 = n->board->clone();
-
   int countPossibleMoves=0;
   for(int i=0;i<7;i++){
     if(b2->getBoard().at(0).at(i) == '-'){
       countPossibleMoves++;
     }
   }
-
-  while(b2->isGameOver()){
+  while(!b2->isGameOver()){
     randCol = rand() % countPossibleMoves;
     int row = b2->getRow(randCol);
     b2->playMCTS(randCol);
@@ -105,6 +104,7 @@ int MCTS::simulate(node *n){
       return -1; //PLAYER WON
     }
   }
+  delete(b2);
   return 0; //draw
 }
 

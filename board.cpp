@@ -493,10 +493,10 @@ void Board::playMCTS(int col){
 }
 
 Board *Board::clone(){
-  Board* b2 = new Board();
+  Board *b2 = new Board();
   for(int i=0;i<6;i++){
     for(int j=0;j<7;j++){
-      b2->getBoard().at(i).at(j) = this->board.at(i).at(j);
+      b2->board[i][j] = this->board[i][j];
     }
   }
   return b2;
