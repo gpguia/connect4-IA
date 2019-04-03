@@ -23,6 +23,7 @@ struct node{
     parent = n;
     games=0;
     wins=0;
+    children.resize(7);
   }
 
   bool hasChildren(){
@@ -34,10 +35,9 @@ class MCTS{
 private:
   void clear(node *n);
   double eval(node *n, int num);
-  int select_child(node *n);
-  node *select(node *root, Board *b);
-  node *expand(node *n, Board *b);
-  int simulate(Board *b);
+  node *select(node *root);
+  node *expand(node *n);
+  int simulate(node *n);
   void backpropagate(node *n, int win);
 public:
   MCTS();

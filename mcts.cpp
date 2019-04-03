@@ -12,22 +12,19 @@ MCTS::~MCTS(){
 int MCTS::mcts(Board *b, int time_limit){
   int start_time = clock();
   srand(time(NULL));
-
   node *root = new node(NULL,b);
   node *n, *child;
   int res=-1;
-  node *clone1,clone2;
+
   while(clock() - start_time < time_limit){
-    clone1 = b->clone();
-    n = select(root,clone1);
+    n = root;
     if(n == NULL){
       continue;
     }
-    clone2 = clone1->clone();
 
-    expand(n,clone1);
-    res = simulate(clone1);
-    backpropagate(clone1,res);
+    expand(n);
+    res = simulate(n);
+    backpropagate(n,res);
   }
   int bestResultNode=-1;
   for(int i=0;i<7;i++){
@@ -37,50 +34,42 @@ int MCTS::mcts(Board *b, int time_limit){
       }
     }
   }
-
+  cout << "ret: " << bestResultNode << endl;
   return bestResultNode;
 }
 
-double MCTS::eval(node *n, int num){
-  if(!n->hasChildren()){
-    return 0.5 + EXPLOR_PARAM*sqrt(log(num+1));
+node *MCTS::select(node *root){
+  for(int i=0;i<7;i++){
+    if(root->children[i] == NULL && !root->board->isColumnFree(i))
+      return root;
   }
-  double weight = n->wins/((double)n->games+1);
-  if('O' != n->board->getTurn())
-    weight = 1.0-weight;
-  return weight + EXPLOR_PARAM*sqrt(log(num+1)/((double)n->games+1));
-}
+  double maxVal = -1;
+  int maxIndex = -1;
+  for(int i=0;i<7;i++){
+    if(root->board->isColumnFree(i))
+      continue;
 
-int MCTS::select_child(node *n){
-  int childSize = (int)n->children.size();
-  int bestMove = 0;
-  double value = -1,val;
-  for(int i=0; i<7;i++){
-    val = eval(n->children[i],n->games);
-    if(val > value){
-      value = val;
-      bestMove = i;
+    node *cur = root->children[i];
+    double wins;
+    if(root->board->getTurn() == 'X'){
+      wins = (double)cur->wins;
+    }else{
+      wins = (double)(cur->games - cur->wins);
+    }
+    double val = (wins/cur->games) + sqrt(2)*sqrt(log(root->games)/cur->games);
+    if(val > maxVal){
+      maxVal = val;
+      maxIndex = i;
     }
   }
-  return bestMove;
+  if(maxVal == -1)
+    return NULL;
+  return select(root->children[maxIndex]);
 }
 
-node *MCTS::select(node *root, Board *b){
-  if(!root){
-    cout << "Error: root NULL" << endl;
-    exit(1);
-  }
-  if(!root->hasChildren())
-    return root;
-
-  int best = select_child(root);
-
-  return select(root->children[best],b);
-
-}
-
-node *MCTS::expand(node *n,Board *b){
+node *MCTS::expand(node *n){
   vector<int> arrToVisit;
+  arrToVisit.resize(7);
   for(int i=0;i<7;i++){
     if(n->children[i] == NULL && n->board->isColumnFree(i)){
       arrToVisit.push_back(i);
@@ -94,13 +83,13 @@ node *MCTS::expand(node *n,Board *b){
   return n->children[k];
 }
 
-int MCTS::simulate(Board *b){
+int MCTS::simulate(node *n){
   int randCol=0;
-  Board *b2 = b->clone();
+  Board *b2 = n->board->clone();
 
   int countPossibleMoves=0;
   for(int i=0;i<7;i++){
-    if(b->getBoard().at(0).at(i) == '-'){
+    if(b2->getBoard().at(0).at(i) == '-'){
       countPossibleMoves++;
     }
   }
@@ -113,10 +102,10 @@ int MCTS::simulate(Board *b){
     if(win == 1){
       return 1; //AI WON
     }else if(win == 0){
-      return 0; //PLAYER WON
+      return -1; //PLAYER WON
     }
   }
-  return -1; //draw
+  return 0; //draw
 }
 
 void MCTS::backpropagate(node *n, int win){
