@@ -9,20 +9,18 @@ MCTS::~MCTS(){
 
 }
 
-int MCTS::mcts(Board *b, int time_limit){
-  int start_time = clock();
-  srand(time(NULL));
-  node *root = new node(NULL,b);
-  node *n, *child;
+int MCTS::mcts(Board *b){
+  clock_t start_time = clock();
+  this->root = new node(NULL,b);
   int res=-1;
 
-  while(clock() - start_time < time_limit){
-    n = root;
+  while(clock() - start_time < TIME_LIMIT){
+    node *n = rSelection();
     if(n == NULL){
       continue;
     }
 
-    child = expand(n);
+    node *child = expand(n);
     res = simulate(child);
     backpropagate(child,res);
   }
@@ -38,25 +36,30 @@ int MCTS::mcts(Board *b, int time_limit){
   return bestResultNode;
 }
 
-node *MCTS::select(node *root){
+node *MCTS::rSelection(){
+  return select(this->root);
+}
+
+node *MCTS::select(node *parent){
   for(int i=0;i<7;i++){
-    if(root->children[i] == NULL && !root->board->isColumnFree(i))
-      return root;
+    if(parent->children[i] == NULL && !parent->board->isColumnFree(i)){
+      return parent;
+    }
   }
   double maxVal = -1;
   int maxIndex = -1;
   for(int i=0;i<7;i++){
-    if(root->board->isColumnFree(i))
+    if(parent->board->isColumnFree(i))
       continue;
 
-    node *cur = root->children[i];
+    node *cur = parent->children[i];
     double wins;
-    if(root->board->getTurn() == 'X'){
+    if(parent->board->getTurn() == 'X'){
       wins = (double)cur->wins;
     }else{
       wins = (double)(cur->games - cur->wins);
     }
-    double val = (wins/cur->games) + sqrt(2)*sqrt(log(root->games)/cur->games);
+    double val = (wins/cur->games) + sqrt(2)*sqrt(log(parent->games)/cur->games);
     if(val > maxVal){
       maxVal = val;
       maxIndex = i;
@@ -64,27 +67,27 @@ node *MCTS::select(node *root){
   }
   if(maxVal == -1)
     return NULL;
-  return select(root->children[maxIndex]);
+  return select(parent->children[maxIndex]);
 }
 
 node *MCTS::expand(node *n){
+  srand(time(NULL));
   vector<int> arrToVisit;
-  arrToVisit.resize(7);
   for(int i=0;i<7;i++){
-    if(n->children[i] == NULL && n->board->isColumnFree(i)){
+    if(n->children[i] == NULL && !n->board->isColumnFree(i)){
       arrToVisit.push_back(i);
     }
   }
-  int randNum = rand() % arrToVisit.size();
+  int randNum = rand() % (int)arrToVisit.size();
   int k = arrToVisit[randNum];
   Board *b3 = n->board->clone();
   b3->playMCTS(k);
   n->children[k] = new node(n,b3);
-  delete(b3);
   return n->children[k];
 }
 
 int MCTS::simulate(node *n){
+  srand(time(NULL));
   int randCol=0;
   Board *b2 = n->board->clone();
   int countPossibleMoves=0;
@@ -104,7 +107,6 @@ int MCTS::simulate(node *n){
       return -1; //PLAYER WON
     }
   }
-  delete(b2);
   return 0; //draw
 }
 

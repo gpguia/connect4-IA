@@ -6,9 +6,7 @@
 #include <time.h>
 
 #define MP make_pair
-
-
-const double EXPLOR_PARAM = 1.3;
+#define TIME_LIMIT 2000000
 
 struct node{
   node *parent;
@@ -23,26 +21,27 @@ struct node{
     parent = n;
     games=0;
     wins=0;
-    children.resize(7);
+    for(int i=0;i<7;i++){
+      children.push_back(NULL);
+    }
   }
 
-  bool hasChildren(){
-    return !children.empty();
-  }
 };
 
 class MCTS{
 private:
+  node *root;
   void clear(node *n);
   double eval(node *n, int num);
   node *select(node *root);
   node *expand(node *n);
   int simulate(node *n);
   void backpropagate(node *n, int win);
+  node *rSelection();
 public:
   MCTS();
   virtual ~MCTS();
-  int mcts(Board *b, int time_limit);
+  int mcts(Board *b);
 
 };
 
