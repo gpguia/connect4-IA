@@ -114,7 +114,7 @@ int main(void){
       break;
 
       case mcts :
-
+      MCTS *mc = new MCTS();
       b->setTurn('X'); //player 1 starts
       while(true){
           if(b->getTurn() == 'X'){
@@ -134,7 +134,6 @@ int main(void){
 
               //start timer
               tStart = clock();
-              MCTS *mc = new MCTS();
               column = mc->mcts(b);
               /* MEMORY USAGE */
               double nowRSS, nowVM;
@@ -152,7 +151,6 @@ int main(void){
               if(checkPlay != 2 && checkPlay != -1){
                   break;
               }
-              delete(mc);
               b->setTurn('X');
           }
       }
