@@ -11,7 +11,7 @@ using namespace std;
 class Board{
     private:
          MATRIX board;
-         int last_row=0, last_col=0;
+         int last_row, last_col;
          char turn;
          int pts[4];
          int calcHor(int row, int col, char turn);

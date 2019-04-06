@@ -23,7 +23,7 @@ int MCTS::mcts(Board *board, int time_limit, bool player1){
     expand(child,dup1);
 
     //simulate
-    res = simulate(dup1,child->next_player,41); //42 maximum possible plays
+    res = simulate(dup1,child->next_player,45); //42 maximum possible plays
 
     //backpropagate
     if(child->next_player && res>0){

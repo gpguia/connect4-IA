@@ -12,6 +12,8 @@ Board::Board(){
     pts[1] = 1;
     pts[2] = 10;
     pts[3] = 50;
+    this->last_col=-1;
+    this->last_row=-1;
 }
 
 Board::~Board() {
@@ -499,6 +501,8 @@ Board *Board::dup(){
   for(int i=0;i<6;i++){
     for(int j=0;j<7;j++){
       b2->board[i][j] = this->board[i][j];
+      b2->last_row = this->last_row;
+      b2->last_col = this->last_col;
     }
   }
   return b2;
