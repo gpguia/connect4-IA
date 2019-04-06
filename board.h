@@ -36,6 +36,7 @@ class Board{
         void playMCTS(int col);
         Board* dup();
         bool isColumnFree(int col);
+        vector<int> getPlays();
 };
 
 #endif

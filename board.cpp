@@ -505,3 +505,13 @@ Board *Board::dup(){
 bool Board::isColumnFree(int col){
   return !(this->board.at(0).at(col) == '-');
 }
+
+vector<int> Board::getPlays(){
+  vector<int> plays;
+  for(int i=0;i<7;i++){
+    if(this->board[0][i] == '-'){
+      plays.push_back(i);
+    }
+  }
+  return plays;
+}

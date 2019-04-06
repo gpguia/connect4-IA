@@ -1,48 +1,76 @@
 #ifndef MCTS_H
 #define MCTS_H
 
-#include "board.h"
-#include <cmath>
 #include <time.h>
+#include <math.h>
+//#include "common.h"
+#include "board.h"
 
-#define MP make_pair
-#define TIME_LIMIT 2000000
+using namespace std;
 
 struct node{
-  node *parent;
+  node* parent;
+
+  bool next_player;
   int games;
   int wins;
-  Board *board;
+  int id;
 
-  vector<node*> children;
+  vector<int> lst_plays;
+  vector<node*> lst_childs;
 
-  node(node *n, Board *b){
-    board = b;
-    parent = n;
-    games=0;
-    wins=0;
-    for(int i=0;i<7;i++){
-      children.push_back(NULL);
-    }
+  node(node *p, bool player, int idx){
+    parent = p;
+    id =  idx;
+
+    next_player = player;
+    games = 0;
+    wins = 0;
   }
 
+  bool has_childs(){
+    return !lst_childs.empty();
+  }
 };
+
+static void clean(node *n){
+  for(node *x: n->lst_childs) clean(x);
+  delete(n);
+}
+
+static void print_tabs(int x){
+  for(int i=0;i<x;i++) printf("  ");
+}
+
 
 class MCTS{
-private:
-  node *root;
-  void clear(node *n);
-  double eval(node *n, int num);
-  node *select(node *root);
-  node *expand(node *n);
-  int simulate(node *n);
-  void backpropagate(node *n, int win);
-  node *rSelection();
 public:
-  MCTS();
-  virtual ~MCTS();
-  int mcts(Board *b);
+  static node* papi;
+
+  static int mcts(Board *board, int time_limit, bool player1);
+
+  static double eval(node *n, int tot);
+  static int select_child(node* n);
+  static node* select(node* node,Board *board);
+  static void expand(node* n, Board *board);
+  static int simulate(Board *board, bool player1, int depth_max);
+  static void backpropagate(node *n, int win,int draw, bool player);
 
 };
 
-#endif
+static void print_tree(node *n, int tabs){
+  return;
+  if(tabs > 1)return;
+
+  if(!n->has_childs()){
+    print_tabs(tabs);
+    printf("(----):\n");
+    return;
+  }
+  print_tabs(tabs);
+  if(n->parent) printf("(%.3lf,%d):\n",MCTS::eval(n,n->parent->games),(int)n->games);
+  else printf("(--,%d):\n",(int)n->games);
+  for(node *a: n->lst_childs) print_tree(a,tabs+1);
+}
+
+#endif //MCTS_H
