@@ -492,7 +492,7 @@ void Board::playMCTS(int col){
   return;
 }
 
-Board *Board::clone(){
+Board *Board::dup(){
   Board *b2 = new Board();
   for(int i=0;i<6;i++){
     for(int j=0;j<7;j++){

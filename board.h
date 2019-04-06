@@ -34,7 +34,7 @@ class Board{
         int checkPoints(int row, int col, char turn);
         bool isGameOver();
         void playMCTS(int col);
-        Board* clone();
+        Board* dup();
         bool isColumnFree(int col);
 };
 

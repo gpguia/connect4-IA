@@ -12,6 +12,6 @@
 #include <ios>
 #include <fstream>
 
-void readInput(int *algorithm, int *depth);
+void readInput(int *algorithm, int *depth, int *first2Play);
 void getPlayerCol(Board *b,int *col);
 void process_mem_usage(double& vm_usage, double& resident_set);

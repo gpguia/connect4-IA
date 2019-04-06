@@ -80,7 +80,7 @@ node *MCTS::expand(node *n){
   }
   int randNum = rand() % (int)arrToVisit.size();
   int k = arrToVisit[randNum];
-  Board *b3 = n->board->clone();
+  Board *b3 = n->board->dup();
   b3->playMCTS(k);
   n->children[k] = new node(n,b3);
   return n->children[k];
@@ -89,7 +89,7 @@ node *MCTS::expand(node *n){
 int MCTS::simulate(node *n){
   srand(time(NULL));
   int randCol=0;
-  Board *b2 = n->board->clone();
+  Board *b2 = n->board->dup();
   int countPossibleMoves=0;
   for(int i=0;i<7;i++){
     if(b2->getBoard().at(0).at(i) == '-'){

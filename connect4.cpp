@@ -12,15 +12,110 @@ enum{
 
 
 int main(void){
-    int algorithm, depth, row, column, checkPlay, win;
+    int algorithm, depth, row, column, checkPlay, win, first2Play;
     Board *b = new Board();
     clock_t tStart,tEnd;
 
-    readInput(&algorithm,&depth);
-    switch(algorithm){
+    readInput(&algorithm,&depth,&first2Play);
+    if(first2Play == 1){
+      switch(algorithm){
 
-      case minimax :
+        case minimax :
 
+          b->setTurn('X'); //player 1 starts
+          while(true){
+              if(b->getTurn() == 'X'){
+                  getPlayerCol(b,&column);
+                  checkPlay = b->play(column);
+                  while(checkPlay == -1){
+                      cout << "ERROR: invalid column." << endl;
+                      getPlayerCol(b,&column);
+                      checkPlay = b->play(column);
+                  }
+                  if(checkPlay != 2 && checkPlay != -1){
+                      break;
+                  }
+                  b->setTurn('O');
+              }else{
+                  //AI
+
+                  //start timer
+                  tStart = clock();
+                  Minimax *mm = new Minimax();
+                  column = mm->minimax(b,depth);
+                  /* MEMORY USAGE */
+                	double nowRSS, nowVM;
+                	process_mem_usage(nowVM,nowRSS);
+                	if(nowVM > vm)
+                		vm = nowVM;
+
+                	if(nowRSS > rss)
+                    rss = nowRSS;
+                  tEnd = clock();
+                  cout << "\nAI Selected column: " << column+1 << endl;
+                  cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
+                  cout << "VM: " << vm << "; RSS: " << rss << endl;
+                  checkPlay = b->play(column);
+                  if(checkPlay != 2 && checkPlay != -1){
+                      break;
+                  }
+                  delete(mm);
+                  b->setTurn('X');
+              }
+          }
+          //add the last pice
+          b->printBoard();
+        break;
+
+        case alfabeta :
+
+        b->setTurn('X'); //player 1 starts
+        while(true){
+            if(b->getTurn() == 'X'){
+                getPlayerCol(b,&column);
+                checkPlay = b->play(column);
+                while(checkPlay == -1){
+                    cout << "ERROR: invalid column." << endl;
+                    getPlayerCol(b,&column);
+                    checkPlay = b->play(column);
+                }
+                if(checkPlay != 2 && checkPlay != -1){
+                    break;
+                }
+                b->setTurn('O');
+            }else{
+                //AI
+
+                Alphabeta *ab = new Alphabeta();
+                //start timer
+                tStart = clock();
+
+                column = ab->alphabeta(b,-513,513,depth);
+                /* MEMORY USAGE */
+                double nowRSS, nowVM;
+                process_mem_usage(nowVM,nowRSS);
+                if(nowVM > vm)
+                  vm = nowVM;
+
+                if(nowRSS > rss)
+                  rss = nowRSS;
+                tEnd = clock();
+                cout << "\nAI Selected column: " << column+1 << endl;
+                cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
+                cout << "VM: " << vm << "; RSS: " << rss << endl;
+                checkPlay = b->play(column);
+                if(checkPlay != 2 && checkPlay != -1){
+                    break;
+                }
+                delete(ab);
+                b->setTurn('X');
+            }
+        }
+        b->printBoard();
+        break;
+
+        case mcts :
+        MCTS *mc = new MCTS();
         b->setTurn('X'); //player 1 starts
         while(true){
             if(b->getTurn() == 'X'){
@@ -40,127 +135,175 @@ int main(void){
 
                 //start timer
                 tStart = clock();
-                Minimax *mm = new Minimax();
-                column = mm->minimax(b,depth);
+                column = mc->mcts(b);
                 /* MEMORY USAGE */
-              	double nowRSS, nowVM;
-              	process_mem_usage(nowVM,nowRSS);
-              	if(nowVM > vm)
-              		vm = nowVM;
+                double nowRSS, nowVM;
+                process_mem_usage(nowVM,nowRSS);
+                if(nowVM > vm)
+                  vm = nowVM;
 
-              	if(nowRSS > rss)
+                if(nowRSS > rss)
                   rss = nowRSS;
                 tEnd = clock();
-                cout << "\nAI Selected column: " << column << endl;
+                cout << "\nAI Selected column: " << column+1 << endl;
                 cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
                 cout << "VM: " << vm << "; RSS: " << rss << endl;
                 checkPlay = b->play(column);
                 if(checkPlay != 2 && checkPlay != -1){
                     break;
                 }
-                delete(mm);
                 b->setTurn('X');
             }
         }
-        //add the last pice
         b->printBoard();
-      break;
+        break;
+      }
+    }else{
+      switch(algorithm){
 
-      case alfabeta :
+        case minimax :
 
-      b->setTurn('X'); //player 1 starts
-      while(true){
-          if(b->getTurn() == 'X'){
-              getPlayerCol(b,&column);
-              checkPlay = b->play(column);
-              while(checkPlay == -1){
-                  cout << "ERROR: invalid column." << endl;
+          b->setTurn('O'); //AI STARTS
+          while(true){
+              if(b->getTurn() == 'X'){
                   getPlayerCol(b,&column);
                   checkPlay = b->play(column);
-              }
-              if(checkPlay != 2 && checkPlay != -1){
-                  break;
-              }
-              b->setTurn('O');
-          }else{
-              //AI
+                  while(checkPlay == -1){
+                      cout << "ERROR: invalid column." << endl;
+                      getPlayerCol(b,&column);
+                      checkPlay = b->play(column);
+                  }
+                  if(checkPlay != 2 && checkPlay != -1){
+                      break;
+                  }
+                  b->setTurn('O');
+              }else{
+                  //AI
 
-              Alphabeta *ab = new Alphabeta();
-              //start timer
-              tStart = clock();
+                  //start timer
+                  tStart = clock();
+                  Minimax *mm = new Minimax();
+                  column = mm->minimax(b,depth);
+                  /* MEMORY USAGE */
+                	double nowRSS, nowVM;
+                	process_mem_usage(nowVM,nowRSS);
+                	if(nowVM > vm)
+                		vm = nowVM;
 
-              column = ab->alphabeta(b,-513,513,depth);
-              /* MEMORY USAGE */
-              double nowRSS, nowVM;
-              process_mem_usage(nowVM,nowRSS);
-              if(nowVM > vm)
-                vm = nowVM;
-
-              if(nowRSS > rss)
-                rss = nowRSS;
-              tEnd = clock();
-              cout << "\nAI Selected column: " << column << endl;
-              cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
-              cout << "VM: " << vm << "; RSS: " << rss << endl;
-              checkPlay = b->play(column);
-              if(checkPlay != 2 && checkPlay != -1){
-                  break;
-              }
-              delete(ab);
-              b->setTurn('X');
-          }
-      }
-      b->printBoard();
-      break;
-
-      case mcts :
-      MCTS *mc = new MCTS();
-      b->setTurn('X'); //player 1 starts
-      while(true){
-          if(b->getTurn() == 'X'){
-              getPlayerCol(b,&column);
-              checkPlay = b->play(column);
-              while(checkPlay == -1){
-                  cout << "ERROR: invalid column." << endl;
-                  getPlayerCol(b,&column);
+                	if(nowRSS > rss)
+                    rss = nowRSS;
+                  tEnd = clock();
+                  cout << "\nAI Selected column: " << column+1 << endl;
+                  cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
+                  cout << "VM: " << vm << "; RSS: " << rss << endl;
                   checkPlay = b->play(column);
+                  if(checkPlay != 2 && checkPlay != -1){
+                      break;
+                  }
+                  delete(mm);
+                  b->setTurn('X');
               }
-              if(checkPlay != 2 && checkPlay != -1){
-                  break;
-              }
-              b->setTurn('O');
-          }else{
-              //AI
-
-              //start timer
-              tStart = clock();
-              column = mc->mcts(b);
-              /* MEMORY USAGE */
-              double nowRSS, nowVM;
-              process_mem_usage(nowVM,nowRSS);
-              if(nowVM > vm)
-                vm = nowVM;
-
-              if(nowRSS > rss)
-                rss = nowRSS;
-              tEnd = clock();
-              cout << "\nAI Selected column: " << column << endl;
-              cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
-              cout << "VM: " << vm << "; RSS: " << rss << endl;
-              checkPlay = b->play(column);
-              if(checkPlay != 2 && checkPlay != -1){
-                  break;
-              }
-              b->setTurn('X');
           }
+          //add the last pice
+          b->printBoard();
+        break;
+
+        case alfabeta :
+
+        b->setTurn('O'); //AI STARTS
+        while(true){
+            if(b->getTurn() == 'X'){
+                getPlayerCol(b,&column);
+                checkPlay = b->play(column);
+                while(checkPlay == -1){
+                    cout << "ERROR: invalid column." << endl;
+                    getPlayerCol(b,&column);
+                    checkPlay = b->play(column);
+                }
+                if(checkPlay != 2 && checkPlay != -1){
+                    break;
+                }
+                b->setTurn('O');
+            }else{
+                //AI
+
+                Alphabeta *ab = new Alphabeta();
+                //start timer
+                tStart = clock();
+
+                column = ab->alphabeta(b,-513,513,depth);
+                /* MEMORY USAGE */
+                double nowRSS, nowVM;
+                process_mem_usage(nowVM,nowRSS);
+                if(nowVM > vm)
+                  vm = nowVM;
+
+                if(nowRSS > rss)
+                  rss = nowRSS;
+                tEnd = clock();
+                cout << "\nAI Selected column: " << column+1 << endl;
+                cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
+                cout << "VM: " << vm << "; RSS: " << rss << endl;
+                checkPlay = b->play(column);
+                if(checkPlay != 2 && checkPlay != -1){
+                    break;
+                }
+                delete(ab);
+                b->setTurn('X');
+            }
+        }
+        b->printBoard();
+        break;
+
+        case mcts :
+        MCTS *mc = new MCTS();
+        b->setTurn('O'); //AI STARTS
+        while(true){
+            if(b->getTurn() == 'X'){
+                getPlayerCol(b,&column);
+                checkPlay = b->play(column);
+                while(checkPlay == -1){
+                    cout << "ERROR: invalid column." << endl;
+                    getPlayerCol(b,&column);
+                    checkPlay = b->play(column);
+                }
+                if(checkPlay != 2 && checkPlay != -1){
+                    break;
+                }
+                b->setTurn('O');
+            }else{
+                //AI
+
+                //start timer
+                tStart = clock();
+                column = mc->mcts(b);
+                /* MEMORY USAGE */
+                double nowRSS, nowVM;
+                process_mem_usage(nowVM,nowRSS);
+                if(nowVM > vm)
+                  vm = nowVM;
+
+                if(nowRSS > rss)
+                  rss = nowRSS;
+                tEnd = clock();
+                cout << "\nAI Selected column: " << column+1 << endl;
+                cout << "Runtime: " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << " segs" << endl;
+                cout << "VM: " << vm << "; RSS: " << rss << endl;
+                checkPlay = b->play(column);
+                if(checkPlay != 2 && checkPlay != -1){
+                    break;
+                }
+                b->setTurn('X');
+            }
+        }
+        b->printBoard();
+        break;
       }
-      b->printBoard();
-      break;
     }
     return 0;
 }
 
-void readInput(int *algorithm, int *depth){
+void readInput(int *algorithm, int *depth, int *first2Play){
     printf("Please select an algorithm: \n\n");
     printf("1 - Minimax\n");
     printf("2 - Alpha-Beta\n");
@@ -175,6 +318,12 @@ void readInput(int *algorithm, int *depth){
         scanf("%d",algorithm);
     }
     if(*algorithm == 3){
+      printf("Select frist to play: \n1 - Player Starts\n2 - AI - Starts\n");
+      scanf("%d",first2Play);
+      while(*first2Play != 1 && *first2Play != 2){
+        printf("Select frist to play: \n1 - Player Starts\n2 - AI - Starts\n");
+        scanf("%d",first2Play);
+      }
       return;
     }
     printf("\nPlease select the difficulty: \n");
@@ -183,6 +332,12 @@ void readInput(int *algorithm, int *depth){
     while(*depth != 1 && *depth != 2 && *depth != 3 && *depth != 4 && *depth != 5 && *depth != 6){
         printf("Please select a number from 1 to 6\n");
         scanf("%d",depth);
+    }
+    printf("Select frist to play: \n1 - Player Starts\n2 - AI - Starts\n");
+    scanf("%d",first2Play);
+    while(*first2Play != 1 && *first2Play != 2){
+      printf("Select frist to play: \n1 - Player Starts\n2 - AI - Starts\n");
+      scanf("%d",first2Play);
     }
 }
 
