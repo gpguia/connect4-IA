@@ -11,6 +11,7 @@ using namespace std;
 class Board{
     private:
          MATRIX board;
+         int last_row=0, last_col=0;
          char turn;
          int pts[4];
          int calcHor(int row, int col, char turn);
@@ -32,11 +33,12 @@ class Board{
         int fullCheck();
         int utility();
         int checkPoints(int row, int col, char turn);
-        bool isGameOver();
+        int checkWinMCTS();
         void playMCTS(int col);
         Board* dup();
         bool isColumnFree(int col);
         vector<int> getPlays();
+        bool isBoardFull();
 };
 
 #endif

@@ -135,7 +135,7 @@ int main(void){
 
                 //start timer
                 tStart = clock();
-                column = mc->mcts(b,1000000,false);
+                column = mc->mcts(b,2000000,false);
                 /* MEMORY USAGE */
                 double nowRSS, nowVM;
                 process_mem_usage(nowVM,nowRSS);

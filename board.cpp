@@ -464,13 +464,14 @@ int Board::checkPoints(int row, int col, char turn){
 
 }
 
-bool Board::isGameOver(){
-  for(int i=0;i<7;i++){
-    if(this->board.at(0).at(i) == '-'){
-      return false;
-    }
+int Board::checkWinMCTS(){
+  int win = checkWin(this->last_row,this->last_col);
+  if(win == 1){
+    return 1;
+  }else if(win == 0){
+    return -1;
   }
-  return true;
+  return 0;
 }
 
 
@@ -481,7 +482,8 @@ void Board::playMCTS(int col){
   }
 
   int row = getRow(col);
-
+  this->last_row = row;
+  this->last_col = col;
   if(this->turn == 'X'){
     this->setPos(row,col,'X');
     this->setTurn('O');
@@ -514,4 +516,16 @@ vector<int> Board::getPlays(){
     }
   }
   return plays;
+}
+
+bool Board::isBoardFull(){
+  int count=0;
+  for(int i=0;i<7;i++){
+    if(this->board[0][i] != '-'){
+      count++;
+    }
+  }
+  if(count == 7)
+    return true;
+  return false;
 }

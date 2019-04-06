@@ -23,7 +23,7 @@ int MCTS::mcts(Board *board, int time_limit, bool player1){
     expand(child,dup1);
 
     //simulate
-    res = simulate(dup1,child->next_player,42); //42 maximum possible plays
+    res = simulate(dup1,child->next_player,41); //42 maximum possible plays
 
     //backpropagate
     if(child->next_player && res>0){
@@ -108,9 +108,9 @@ void MCTS::expand(node *n, Board *board){
 }
 
 int MCTS::simulate(Board *board, bool player1, int depth_max){
-  int end = board->isGameOver();
+  int end = board->checkWinMCTS();
   if(end) return end;
-  if(!depth_max) return 0;
+  if(!depth_max || board->isBoardFull()) return 0;
 
   int r;
 
